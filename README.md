@@ -6,6 +6,8 @@ This project is covid-19 real time stats demonstrator along with customer awaren
 
 Check out http://interactivecovid19dashboard.herokuapp.com/
 
+Join the team at: www.dakshtrehan.com; www.priyanshsinghal.com
+
 ## Key Features
 * Live COVID stats
 * Recovery Rate prediction
@@ -27,17 +29,28 @@ To take another step towards challenges, we have also introduced prediction rate
 
 ## Peek : 
 ### Overview
-![](https://github.com/dakshtrehan/Covid-19-Dashboard/blob/master/images/Screenshot%20(103).png)
+![](https://github.com/dakshtrehan/Interactive-Covid-19-Dashboard/blob/main/Images/Covid%20Homepage.png)
 ### Country-wise stats interactive representation
-![](https://github.com/dakshtrehan/Covid-19-Dashboard/blob/master/images/Screenshot%20(98).png)
+![](https://github.com/dakshtrehan/Interactive-Covid-19-Dashboard/blob/main/Images/India%20visual%20cases.png)
 ### Country-wise Graphical stats 
 ![](https://github.com/dakshtrehan/Covid-19-Dashboard/blob/master/images/Screenshot%20(97).png)<br>
 ### Option to download interactive country-wise stats charts in various formats
-![](https://github.com/dakshtrehan/Covid-19-Dashboard/blob/master/images/Screenshot%20(100).png) <br>
+![](https://github.com/dakshtrehan/Interactive-Covid-19-Dashboard/blob/main/Images/Download%20visuals.png) <br>
 ### Daily cummulative data vs Rolling Mean for 4 days, country-wise
-![](https://github.com/dakshtrehan/Covid-19-Dashboard/blob/master/images/Screenshot%20(108).png)<br>
+![](https://github.com/dakshtrehan/Interactive-Covid-19-Dashboard/blob/main/Images/Rolling%20Mean.png)<br>
 ### Last days stats along with option to download them in various formats
-![](https://github.com/dakshtrehan/Covid-19-Dashboard/blob/master/images/Screenshot%20(101).png)
+![](https://github.com/dakshtrehan/Interactive-Covid-19-Dashboard/blob/main/Images/6%20days%20count.png)
+### Interactive Chatbot
+![](https://github.com/dakshtrehan/Interactive-Covid-19-Dashboard/blob/main/Images/chatbot.png)<br>
+### Analysis of world-wise trend
+![](https://github.com/dakshtrehan/Interactive-Covid-19-Dashboard/blob/main/Images/Prediction%20graphs.png)<br>
+### Predicting number of cases worldwide
+![](https://github.com/dakshtrehan/Interactive-Covid-19-Dashboard/blob/main/Images/Prediction%202.png)<br>
+### Predicting number of recovered cases worldwide
+![](https://github.com/dakshtrehan/Interactive-Covid-19-Dashboard/blob/main/Images/Prediction%203.png)<br>
+### Accuracies
+![](https://github.com/dakshtrehan/Interactive-Covid-19-Dashboard/blob/main/Images/Prediction%204.png)<br>
+
 
 ## Tech Stack
 * Python 3
@@ -47,7 +60,6 @@ To take another step towards challenges, we have also introduced prediction rate
 * Javascript for dynamic structure
 
 ## Future scope
-* Chatbot addition
 * Better interface
 
-### Designed with ❤ by Daksh Trehan, Priyansh Singhal, Abhishek Jaglan
+#### Designed with ❤ by Daksh Trehan, Priyansh Singhal, Abhishek Jaglan
