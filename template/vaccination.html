@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Vaccination</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+        <style>  
+    
+            .cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            /* gap: 1rem; */
+            }
+
+           
+
+            .card {
+            cursor: pointer;
+            background-color: transparent;
+            width: 100%;
+            margin-left: 10px;
+            /* border: 2px solid black; */
+            }
+
+
+            .card h3 {
+            font-size: 25px;
+            border-bottom: 1px #fff solid;
+            align-items: center;
+            }
+
+            .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            justify-content: center;
+            padding-bottom: 10px;
+
+            }
+
+            .card-inner {
+            position: relative;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+            }
+
+            .card:hover .card-inner {
+            transform: rotateY(180deg);
+            }
+
+            .card-front,
+            .card-back {
+            position: absolute;
+            
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            }
+
+            .card-back {
+            transform: rotateY(180deg);
+            }
+
+            .card li {
+            list-style: none;
+            }
+
+            
+          
+            .button-container{
+                display: flex;
+                justify-content: center;
+                padding: 10px;
+                height: auto;
+            }
+
+            .left-image{
+                /* background-color: red; */
+                height: 400px;
+                width: 100%;
+                margin-left: 100px;
+            }
+
+            .middle-image{
+                margin-top: 0px;
+                height: 400px;
+                width: 33.33%;
+                align-items: center;
+                margin-right: 100px;
+                margin-left: 100px;
+
+            }
+
+            .middle-image button{
+                align-items: center;
+            }
+
+            .right-image{
+                height: 100%;
+                width: 100%;
+                margin-right: 100px;
+
+            }
+
+            .bottom-container{
+                width: 100%;
+                margin-left:0px;
+            }
+
+            .middleImage{
+                display: flex;
+                border: 3px solid black;
+                justify-content: center;
+            }
+
+            .renderedImage{
+                height: 450px;
+                width: 80vw;
+                align-items: center;
+                margin-left: 150px;
+                }
+
+            .middleImage .left{
+                border-right: 3px solid black;
+            }
+
+
+        </style>
+    </head>
+    <body>
+        <div class="fixed-header" style="background-color:#343A40">
+            <div class="navbar navbar-fixed-top navbar-custom ">
+                <div class="container"  >
+                    <div class="navbar-header">
+                        <h1 style="font-size: 30px;text-align: center;color:#e75480">Vaccination Per Country</h1>   
+                    </div>
+                    <div class="navbar">
+                        <ul class="nav navbar-nav navbar-right">
+                            <a href="/"><button style="margin-left:20px" type="button" class="btn btn-success">Return to HomePage!</button></a>
+                        </ul>
+                    </div>
+                </div>  
+            </div>   
+        </div>
+        </br>
+
+        <div class="button-container">
+            <div class="left-image">
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <img src="{% static 'img/vaccinelogos/bharatcovaxin.jpg' %}" alt="" style="height: 400px;" />
+                        </div>
+                        <div class="card-back">
+                            <img src="{% static 'img/vaccinelogos/bharatcovaxin.jpg' %}" alt="" style="height: 400px;" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="middle-image" style=" margin-top: 6px;">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <input type="submit" name="dailyv" style="width: 320px; color: #e75480; background-color: #212529;" value="Daily Vaccination Per Country" class="btn btn-secondary" />
+                    <br>
+                    <br>
+                    <br>
+                    <input type="submit" name="dailyp" style="width: 320px; color: #e75480; background-color: #212529;" value="Daily Vaccination Per Million Per Country" class="btn btn-secondary" />
+                    <br>
+                    <br>
+                    <br>
+                    <input type="submit" name="peoplev"  style="width: 320px; color: #e75480; background-color: #212529;" value="People Vaccinated Per Country" class="btn btn-primary" />
+                    <br>
+                    <br>
+                    <br>
+                    <input type="submit" name="peoplep" style="width: 320px; color: #e75480; background-color: #212529;" value="People Vaccinated Per Million per Country" class="btn btn-secondary" />
+                    <br>
+                    <br>
+                    <br>
+                    <input type="submit" name="totalc" style="width: 320px; color: #e75480; background-color: #212529;" value="Total Vaccination Per Country"  class="btn btn-secondary" />
+                </form>
+            
+            </div>
+            <div class="right-image">
+                <div class="right-image">
+                    <div class="card">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <img src="{% static 'img/vaccinelogos/bharatcovaxin.jpg' %}" alt="" style="height: 400px;" />
+                            </div>
+                            <div class="card-back">
+                                <img src="{% static 'img/vaccinelogos/bharatcovaxin.jpg' %}" alt="" style="height: 400px;" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="bottom-container">
+            {% if imageleft %}
+            <div class="renderedImage">
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <img src="{{imageleft}}" alt="" style="height: 400px;" />
+                        </div>
+                        <div class="card-back">
+                            <img src="{{imageright}}" alt="" style="height: 400px;" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            <div class="mainImage">
+                <img src="{% static 'img/main1.png' %}" alt="" style="width: 100vw;" />
+            </div>
+            <div class="middleImage">
+                <div class="left">
+                    <img src="{% static 'img/middle1.png' %}" alt="" style="width: 50vw;" />
+                </div>
+                <div class="right">
+                    <img src="{% static 'img/bottom1.png' %}" alt="" style="width: 50vw;" />
+                </div>
+            </div>
+            <div class="middleImage" >
+                <div class="left">
+                    <img src="{% static 'img/bottom2.png' %}" alt="" style="width: 50vw;" />
+                </div>
+                <div class="right">
+                    <img src="{% static 'img/middle2.png' %}" alt="" style="width: 50vw;" />
+                </div>
+            </div>
+            <div class="middleImage">
+                <div class="left">
+                    <img src="{% static 'img/middle3.png' %}" alt="" style="width: 50vw;" />
+                </div>
+                <div class="right">
+                    <img src="{% static 'img/bottom3.png' %}" alt="" style="width: 50vw;" />
+                </div>
+            </div>
+        </div>
+        <script src="" async defer></script>
+    </body>
+</html>

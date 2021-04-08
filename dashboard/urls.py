@@ -25,5 +25,6 @@ urlpatterns = [
     url('^$',views.indexPage,name='home'),
     url(r'^chatBot/', views.chatBot,name="chatBot"),
     url(r'^prediction/', views.prediction,name="prediction"),
+    url(r'^vaccination/', views.vaccination,name="vaccination"),
     url('selectCountry',views.singleCountry,name="single"),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

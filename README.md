@@ -62,4 +62,8 @@ To take another step towards challenges, we have also introduced prediction rate
 ## Future scope
 * Better interface
 
+
+## Important things to remember
+* source wenv/bin/activate 
+
 #### Designed with ❤ by Daksh Trehan, Priyansh Singhal, Abhishek Jaglan

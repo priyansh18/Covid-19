@@ -6,6 +6,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from django.http import HttpResponse,HttpRequest
 # Create your views here.
+
 df = pd.read_csv('cdc_qa.csv',
                  header=0,
                  names=['Questions', 'Answers'])
@@ -181,3 +182,36 @@ def prediction(request):
 
     # print("Country Names", countryNames)
     return render(request,'prediction.html',{'Country':countryNames,'selectedCountry':selectedCountry,'imagesAppend':imagesAppend,'imagesAppendR':imagesAppendR})
+
+
+def vaccination(request):
+
+    imageLeft = ''
+    imageRight = ''
+
+
+    if 'dailyv' in request.POST:
+        imageLeft = '/static/img/daily1.png'
+        imageRight = '/static/img/daily2.png'
+    elif 'dailyp' in request.POST:
+        imageLeft = '/static/img/dailyp1.png'
+        imageRight = '/static/img/dailyp2.png'
+    elif 'peoplev' in request.POST:
+        imageLeft = '/static/img/people1.png'
+        imageRight = '/static/img/people2.png'
+    elif 'peoplep' in request.POST:
+        imageLeft = '/static/img/peoplep1.png'
+        imageRight = '/static/img/peoplep2.png'
+    elif 'totalc' in request.POST:
+        imageLeft = '/static/img/total1.png'
+        imageRight = '/static/img/total2.png'
+    else:
+        print("Nothing Clicked")
+
+    if imageLeft == '':
+        imageLeft = False
+    if imageRight == '':
+        imageRight = False
+
+
+    return render(request,'vaccination.html', {"imageleft":imageLeft,"imageright":imageRight})
