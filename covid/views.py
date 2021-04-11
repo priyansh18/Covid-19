@@ -189,6 +189,8 @@ def vaccination(request):
     imageLeft = ''
     imageRight = ''
 
+    estimatedGraph = False
+
 
     if 'dailyv' in request.POST:
         imageLeft = '/static/img/daily1.png'
@@ -205,6 +207,8 @@ def vaccination(request):
     elif 'totalc' in request.POST:
         imageLeft = '/static/img/total1.png'
         imageRight = '/static/img/total2.png'
+    elif 'estimate' in request.POST:
+        estimatedGraph = True        
     else:
         print("Nothing Clicked")
 
@@ -214,4 +218,4 @@ def vaccination(request):
         imageRight = False
 
 
-    return render(request,'vaccination.html', {"imageleft":imageLeft,"imageright":imageRight})
+    return render(request,'vaccination.html', {"imageleft":imageLeft,"imageright":imageRight,"estimatedgraph":estimatedGraph})

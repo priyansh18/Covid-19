@@ -88,9 +88,10 @@
                 margin-top: 0px;
                 height: 400px;
                 width: 33.33%;
-                align-items: center;
+                justify-content: center;
                 margin-right: 100px;
                 margin-left: 100px;
+                display: flex;
 
             }
 
@@ -135,7 +136,7 @@
             <div class="navbar navbar-fixed-top navbar-custom ">
                 <div class="container"  >
                     <div class="navbar-header">
-                        <h1 style="font-size: 30px;text-align: center;color:#e75480">Vaccination Per Country</h1>   
+                        <h1 style="font-size: 30px;text-align: center;color:#e75480">Vaccination Analysis</h1>   
                     </div>
                     <div class="navbar">
                         <ul class="nav navbar-nav navbar-right">
@@ -152,10 +153,10 @@
                 <div class="card">
                     <div class="card-inner">
                         <div class="card-front">
-                            <img src="{% static 'img/vaccinelogos/bharatcovaxin.jpg' %}" alt="" style="height: 400px;" />
+                            <img src="{% static 'img/vaccinelogos/bharatcovaxin.jpg' %}" alt="" style="height: 400px; " />
                         </div>
                         <div class="card-back">
-                            <img src="{% static 'img/vaccinelogos/bharatcovaxin.jpg' %}" alt="" style="height: 400px;" />
+                            <img src="{% static 'img/vaccinelogos/sinopharm.png' %}" alt="" style="height: 400px;" />
                         </div>
                     </div>
                 </div>
@@ -166,20 +167,19 @@
                     <input type="submit" name="dailyv" style="width: 320px; color: #e75480; background-color: #212529;" value="Daily Vaccination Per Country" class="btn btn-secondary" />
                     <br>
                     <br>
-                    <br>
                     <input type="submit" name="dailyp" style="width: 320px; color: #e75480; background-color: #212529;" value="Daily Vaccination Per Million Per Country" class="btn btn-secondary" />
-                    <br>
                     <br>
                     <br>
                     <input type="submit" name="peoplev"  style="width: 320px; color: #e75480; background-color: #212529;" value="People Vaccinated Per Country" class="btn btn-primary" />
                     <br>
                     <br>
-                    <br>
                     <input type="submit" name="peoplep" style="width: 320px; color: #e75480; background-color: #212529;" value="People Vaccinated Per Million per Country" class="btn btn-secondary" />
                     <br>
                     <br>
-                    <br>
                     <input type="submit" name="totalc" style="width: 320px; color: #e75480; background-color: #212529;" value="Total Vaccination Per Country"  class="btn btn-secondary" />
+                    <br>
+                    <br>
+                    <input type="submit" name="estimate" style="width: 320px; color: #e75480; background-color: #212529;" value="Estimate Comparision Per Country"  class="btn btn-secondary" />
                 </form>
             
             </div>
@@ -188,10 +188,10 @@
                     <div class="card">
                         <div class="card-inner">
                             <div class="card-front">
-                                <img src="{% static 'img/vaccinelogos/bharatcovaxin.jpg' %}" alt="" style="height: 400px;" />
+                                <img src="{% static 'img/vaccinelogos/pfizer2.jpeg' %}" alt="" style="height: 400px;" />
                             </div>
                             <div class="card-back">
-                                <img src="{% static 'img/vaccinelogos/bharatcovaxin.jpg' %}" alt="" style="height: 400px;" />
+                                <img src="{% static 'img/vaccinelogos/moderna.jpg' %}" alt="" style="height: 400px;" />
                             </div>
                         </div>
                     </div>
@@ -218,6 +218,7 @@
             <div class="mainImage">
                 <img src="{% static 'img/main1.png' %}" alt="" style="width: 100vw;" />
             </div>
+            {% if estimatedgraph %}
             <div class="middleImage">
                 <div class="left">
                     <img src="{% static 'img/middle1.png' %}" alt="" style="width: 50vw;" />
@@ -242,6 +243,7 @@
                     <img src="{% static 'img/bottom3.png' %}" alt="" style="width: 50vw;" />
                 </div>
             </div>
+            {% endif %}
         </div>
         <script src="" async defer></script>
     </body>
