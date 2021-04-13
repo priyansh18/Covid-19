@@ -4,7 +4,12 @@
 
 This project is covid-19 real time stats demonstrator along with customer awareness and interactive real-time stats.
 
-Check out http://interactivecovid19dashboard.herokuapp.com/
+Check out http://interactivecovid19dashboard.herokuapp.com/<br>
+Link to Research Paper: http://dx.doi.org/10.14299/ijser.2020.12.08 OR http://https://doi.org/ftg4<br>
+Link to Medium Article: https://dakshtrehan.medium.com/interactive-covid-19-dashboard-with-chatbot-and-prediction-capabilities-ad3dc4fa4058<br>
+
+
+
 
 Join the team at: www.dakshtrehan.com; www.priyanshsinghal.com
 
@@ -50,6 +55,8 @@ To take another step towards challenges, we have also introduced prediction rate
 ![](https://github.com/dakshtrehan/Interactive-Covid-19-Dashboard/blob/main/Images/Prediction%203.png)<br>
 ### Accuracies
 ![](https://github.com/dakshtrehan/Interactive-Covid-19-Dashboard/blob/main/Images/Prediction%204.png)<br>
+### Vaccination Analysis
+![](https://github.com/dakshtrehan/Interactive-Covid-19-Dashboard/blob/main/Images/Screenshot%20(933).png)<br>
 
 
 ## Tech Stack
