@@ -167,14 +167,14 @@ def prediction(request):
     barPlotData = barPlotData.sort_values(by='values', ascending=False)
     barPlotVals = barPlotData['values'].values.tolist()
     countryNames = barPlotData['Country/Region'].values.tolist()
-    choosedCountry = ["india","spain","italy","uk","us","france","germany"]
+    choosedCountry = ["india","argentina","italy","uk","us","france","turkey", "russia", "brazil"]
     if request.method == "POST":
         
         selectedCountry = request.POST.get('drop1')
         newSelectedCountry = selectedCountry.lower()
         if newSelectedCountry not in choosedCountry:
-            imagesAppend = "/static/img/spainp.png"
-            imagesAppendR = "/static/img/spainr.png"
+            imagesAppend = "/static/img/turkeyp.png"
+            imagesAppendR = "/static/img/turkeyp.png"
         else:
             imagesAppend = "/static/img/" + newSelectedCountry + "p.png"
             imagesAppendR = "/static/img/" + newSelectedCountry + "r.png"

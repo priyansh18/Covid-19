@@ -88,10 +88,11 @@
                 margin-top: 0px;
                 height: 400px;
                 width: 33.33%;
+                display: flex;
                 justify-content: center;
+                align-items: center;
                 margin-right: 100px;
                 margin-left: 100px;
-                display: flex;
 
             }
 
@@ -136,7 +137,7 @@
             <div class="navbar navbar-fixed-top navbar-custom ">
                 <div class="container"  >
                     <div class="navbar-header">
-                        <h1 style="font-size: 30px;text-align: center;color:#e75480">Vaccination Analysis</h1>   
+                        <h1 style="font-size: 30px;text-align: center;color:azure">Vaccination Analysis</h1>   
                     </div>
                     <div class="navbar">
                         <ul class="nav navbar-nav navbar-right">
@@ -164,22 +165,22 @@
             <div class="middle-image" style=" margin-top: 6px;">
                 <form action="" method="post">
                     {% csrf_token %}
-                    <input type="submit" name="dailyv" style="width: 320px; color: #e75480; background-color: #212529;" value="Daily Vaccination Per Country" class="btn btn-secondary" />
+                    <input type="submit" name="dailyv" style="width: 320px; color: azure; background-color: #212529;" value="Daily Vaccination Per Country" class="btn btn-secondary" />
                     <br>
                     <br>
-                    <input type="submit" name="dailyp" style="width: 320px; color: #e75480; background-color: #212529;" value="Daily Vaccination Per Million Per Country" class="btn btn-secondary" />
+                    <input type="submit" name="dailyp" style="width: 320px; color: azure; background-color: #212529;" value="Daily Vaccination Per Million Per Country" class="btn btn-secondary" />
                     <br>
+                    <!-- <br>
+                    <input type="submit" name="peoplev"  style="width: 320px; color: azure; background-color: #212529;" value="People Vaccinated Per Country" class="btn btn-primary" />
+                    <br> -->
+                    <!-- <br>
+                    <input type="submit" name="peoplep" style="width: 320px; color: azure; background-color: #212529;" value="People Vaccinated Per Million per Country" class="btn btn-secondary" />
+                    <br> -->
+                    <!-- <br>
+                    <input type="submit" name="totalc" style="width: 320px; color: azure; background-color: #212529;" value="Total Vaccination Per Country"  class="btn btn-secondary" />
+                    <br> -->
                     <br>
-                    <input type="submit" name="peoplev"  style="width: 320px; color: #e75480; background-color: #212529;" value="People Vaccinated Per Country" class="btn btn-primary" />
-                    <br>
-                    <br>
-                    <input type="submit" name="peoplep" style="width: 320px; color: #e75480; background-color: #212529;" value="People Vaccinated Per Million per Country" class="btn btn-secondary" />
-                    <br>
-                    <br>
-                    <input type="submit" name="totalc" style="width: 320px; color: #e75480; background-color: #212529;" value="Total Vaccination Per Country"  class="btn btn-secondary" />
-                    <br>
-                    <br>
-                    <input type="submit" name="estimate" style="width: 320px; color: #e75480; background-color: #212529;" value="Estimate Comparision Per Country"  class="btn btn-secondary" />
+                    <input type="submit" name="estimate" style="width: 320px; color: azure; background-color: #212529;" value="Estimate Comparision Per Country"  class="btn btn-secondary" />
                 </form>
             
             </div>
