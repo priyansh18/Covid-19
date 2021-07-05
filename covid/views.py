@@ -29,10 +29,10 @@ def indexPage(request):
     countryNames = barPlotData['Country/Region'].values.tolist()
     # print("Country Names", countryNames)
     dataForMap = mapDataCal(barPlotData, countryNames)
-    dataForheatMap, dateCat = getHeatMapData(confirmedGlobal, countryNames)
+    dataForheatMap, dataCategory = getHeatMapData(confirmedGlobal, countryNames)
     showMap = "True"
     context = {'countryNames': countryNames, 'barPlotVals': barPlotVals,
-               'totalCount': totalCount, 'dataForMap': dataForMap, 'showMap': showMap, 'dataForheatMap': dataForheatMap, 'dateCat': dateCat}
+               'totalCount': totalCount, 'dataForMap': dataForMap, 'showMap': showMap, 'dataForheatMap': dataForheatMap, 'dataCategory': dataCategory}
     return render(request, 'dashboard.html', context)
 
 InputCovid = []
@@ -114,10 +114,10 @@ def getHeatMapData(confirmedGlobal, countryNames):
             dataForheatMap.append(temp)
         except:
             pass
-    dateCat = list(list(confirmedGlobal.columns.values)[-6:-1])
-    # print("dateCat",dateCat)
+    dataCategory = list(list(confirmedGlobal.columns.values)[-6:-1])
+    # print("dataCategory",dataCategory)
     # print("dataForheatMap",dataForheatMap)
-    return dataForheatMap, dateCat
+    return dataForheatMap, dataCategory
 
 
 def singleCountry(request):
@@ -146,9 +146,9 @@ def singleCountry(request):
     datasetsForLine = [{'yAxisID': 'y-axis-1', 'label': 'Daily Cumulated Data', 'data': countryDataSingle['values'].values.tolist(), 'borderColor':'#03a9fc', 'backgroundColor':'#03a9fc', 'fill':'false'},
                        {'yAxisID': 'y-axis-2', 'label': 'Rolling Mean 4 days', 'data': countryDataSingle['rollingMean'].values.tolist(), 'borderColor':'#fc5203', 'backgroundColor':'#fc5203', 'fill':'false'}]
     axisValue = countryDataSingle.index.tolist()
-    dataForheatMap, dateCat = getHeatMapData(confirmedGlobal, countryNames)
+    dataForheatMap, dataCategory = getHeatMapData(confirmedGlobal, countryNames)
     context = {'countryNames': countryNames, 'axisValue': axisValue, 'countryName': countryName, 'barPlotVals': barPlotVals,
-               'totalCount': totalCount, 'showMap': showMap, 'datasetsForLine': datasetsForLine, 'dataForheatMap': dataForheatMap, 'dateCat': dateCat}
+               'totalCount': totalCount, 'showMap': showMap, 'datasetsForLine': datasetsForLine, 'dataForheatMap': dataForheatMap, 'dataCategory': dataCategory}
     return render(request, 'dashboard.html', context)
 
 
