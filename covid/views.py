@@ -33,7 +33,7 @@ def indexPage(request):
     showMap = "True"
     context = {'countryNames': countryNames, 'barPlotVals': barPlotVals,
                'totalCount': totalCount, 'dataForMap': dataForMap, 'showMap': showMap, 'dataForheatMap': dataForheatMap, 'dateCat': dateCat}
-    return render(request, 'index.html', context)
+    return render(request, 'dashboard.html', context)
 
 InputCovid = []
 welcomeResponse = []
@@ -77,9 +77,9 @@ def chatBot(request):
 
             welcomeCovidResponse = zip(InputCovid,welcomeResponse)
             context = {'welcomeCovidResp':welcomeCovidResponse} 
-            return render(request,'chaty.html',context) 
+            return render(request,'chatbot.html',context) 
 
-    return render(request,'chaty.html')    
+    return render(request,'chatbot.html')    
 
 def mapDataCal(barPlotData, countryNames):
 
@@ -149,7 +149,7 @@ def singleCountry(request):
     dataForheatMap, dateCat = getHeatMapData(confirmedGlobal, countryNames)
     context = {'countryNames': countryNames, 'axisValue': axisValue, 'countryName': countryName, 'barPlotVals': barPlotVals,
                'totalCount': totalCount, 'showMap': showMap, 'datasetsForLine': datasetsForLine, 'dataForheatMap': dataForheatMap, 'dateCat': dateCat}
-    return render(request, 'index.html', context)
+    return render(request, 'dashboard.html', context)
 
 
 def prediction(request):

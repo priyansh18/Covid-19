@@ -1,0 +1,110 @@
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  /* gap: 1rem; */
+}
+
+.card {
+  cursor: pointer;
+  background-color: transparent;
+  width: 100%;
+  margin-left: 10px;
+  /* border: 2px solid black; */
+}
+
+.card h3 {
+  font-size: 25px;
+  border-bottom: 1px #fff solid;
+  align-items: center;
+}
+
+.card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  justify-content: center;
+  padding-bottom: 10px;
+}
+
+.card-inner {
+  position: relative;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.card:hover .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+  position: absolute;
+
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.card-back {
+  transform: rotateY(180deg);
+}
+
+.card li {
+  list-style: none;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  height: auto;
+}
+
+.left-image {
+  /* background-color: red; */
+  height: 400px;
+  width: 100%;
+  margin-left: 100px;
+}
+
+.middle-image {
+  margin-top: 0px;
+  height: 400px;
+  width: 33.33%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 100px;
+  margin-left: 100px;
+}
+
+.middle-image button {
+  align-items: center;
+}
+
+.right-image {
+  height: 100%;
+  width: 100%;
+  margin-right: 100px;
+}
+
+.bottom-container {
+  width: 100%;
+  margin-left: 0px;
+}
+
+.middleImage {
+  display: flex;
+  border: 3px solid black;
+  justify-content: center;
+}
+
+.renderedImage {
+  height: 450px;
+  width: 80vw;
+  align-items: center;
+  margin-left: 150px;
+}
+
+.middleImage .left {
+  border-right: 3px solid black;
+}

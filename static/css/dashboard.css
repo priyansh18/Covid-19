@@ -1,0 +1,68 @@
+* {
+  scrollbar-color: rgb(41, 41, 40) black;
+  scrollbar-width: thin;
+}
+
+/* for chrome */
+*::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+*::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgb(41, 41, 40);
+  border-radius: 10px;
+}
+
+body::-webkit-scrollbar {
+  width: 0.3rem;
+}
+
+.fixed-header,
+.fixed-footer {
+  width: 100%;
+  background: #333;
+  color: #fff;
+  margin-bottom: 0px;
+}
+/* .fixed-header {
+      top: 0;
+    }
+    .fixed-footer {
+      bottom: 0;
+    } */
+.container {
+  max-width: 14000px;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+  padding: 7px 25px;
+  display: inline-block;
+}
+#container {
+  height: 500px; 
+  width: 800px; 
+  margin: 0 auto; 
+}
+
+.highcharts-tooltip>span {
+  padding: 10px;
+  white-space: normal !important;
+  width: 200px;
+}
+
+.loading {
+  margin-top: 10em;
+  text-align: center;
+  color: gray;
+}
+
+.f32 .flag {
+  vertical-align: middle !important;
+}
+
