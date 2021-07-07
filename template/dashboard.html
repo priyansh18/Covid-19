@@ -45,17 +45,17 @@ Covid-19 Dashboard
       <div class="row">
         <form method="post" enctype="multipart/form-data" action="selectCountry">
           {% csrf_token %}
-          <div class="col-lg-4" style="float: left;">
+          <div class="col-4" style="float: left;">
             {% for country in countryNames %}
-            <table style="border-width: 2px; border: #333;">
-              <tr>
+            <div style="border-width: 2px; border: #333;">
+              <div>
                 <input class="btn btn-dark" type="submit" value={{country}} name="countryName"
                   style="width:100px; margin:2px;">
-              </tr>
-            </table>
+              </div>
+            </div>
             {% endfor %}
           </div>
-          <div class="col-lg-8" style="float: right;">
+          <div class="col-8" style="float: right;">
             <canvas id="myChart" style="height: 6650px; width: 154px;"></canvas>
           </div>
         </form>
