@@ -58,7 +58,7 @@ Vaccination
                         <br> -->
                 <br>
                 <input type="submit" name="estimate" style="width: 320px; color: azure; background-color: #212529;"
-                    value="Estimate Comparision Per Country" class="btn btn-secondary" />
+                    value="Estimate Comparison Per Country" class="btn btn-secondary" />
             </form>
     
         </div>
@@ -82,14 +82,14 @@ Vaccination
     <div class="row">
         <div class="col-md-6">
             <div class="card">
-                <img class="card-img-top" style="height:200px" src="{% static 'img/total-vaccination-progress.png' %}"
+                <img class="card-img-top" style="height:200px;width:691px;" src="{% static 'img/total-vaccination-progress.png' %}"
                     alt="Card image cap">
 
             </div>
         </div>
         <div class="col-md-6">
             <div class="card">
-                <img class="card-img-top" style="height:200px" src="{% static 'img/vaccination-phases.png' %}"
+                <img class="card-img-top" style="height:200px;width: 610px;" src="{% static 'img/vaccination-phases.png' %}"
                     alt="Card image cap">
 
             </div>
@@ -110,8 +110,8 @@ Vaccination
             </div>
         </div>
         {% endif %}
-        <div class="mainImage">
-            <img src="{% static 'img/main1.png' %}" alt="" style="width: 100vw;" />
+        <div class="mainImage" style="display: flex;justify-content: center;align-items: center;">
+            <img src="{% static 'img/main1.png' %}" alt="" style="width: 85vw;" />
         </div>
         {% if estimatedgraph %}
         <div class="middleImage">
