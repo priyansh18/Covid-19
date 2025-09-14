@@ -9,6 +9,109 @@ Chatbot
 {% block stylescss %}
 
 <link rel="stylesheet" href="{% static 'css/chatbot.css'%}">
+<style>
+  /* Override base template styles for chatbot page only */
+  html, body {
+    background: #e8f4fd !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 100vh !important;
+    overflow: hidden !important;
+  }
+  
+  .navbar {
+    display: none !important;
+  }
+  
+  .footer {
+    display: none !important;
+  }
+  
+  main {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 100vh !important;
+  }
+  
+  .container {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: none !important;
+    width: 100% !important;
+  }
+  
+  .msger {
+    max-width: none !important;
+    width: calc(100vw - 16px) !important;
+    height: calc(100vh - 16px) !important;
+    border-radius: 8px !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: white !important;
+    margin: 8px !important;
+    padding: 0 !important;
+    z-index: 1 !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  
+  .msger-header {
+    padding: 16px 20px !important;
+    margin: 0 !important;
+  }
+  
+  .msger-chat {
+    padding: 16px 20px !important;
+    margin: 0 !important;
+    flex: 1 !important;
+    overflow-y: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  
+  .msg {
+    margin-bottom: 12px !important;
+  }
+  
+  .msg-bubble {
+    margin: 4px 0 !important;
+    padding: 12px 16px !important;
+  }
+  
+  .msger-inputarea {
+    padding: 16px 20px !important;
+    margin: 0 !important;
+    display: flex !important;
+    border-top: 1px solid #ddd !important;
+    background: #f8f9fa !important;
+  }
+  
+  .msger-input {
+    flex: 1 !important;
+    border: 1px solid #ddd !important;
+    border-radius: 20px !important;
+    padding: 10px 15px !important;
+    margin-right: 10px !important;
+    outline: none !important;
+  }
+  
+  .msger-send-btn {
+    background: #28a745 !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 20px !important;
+    padding: 10px 20px !important;
+    cursor: pointer !important;
+    font-weight: bold !important;
+  }
+  
+  .msger-send-btn:hover {
+    background: #218838 !important;
+  }
+</style>
 
 {% endblock %}
 
@@ -67,9 +170,9 @@ Chatbot
 
     </main>
 
-    <form class="msger-inputarea" method="POST">
+    <form class="msger-inputarea" method="POST" action="{% url 'chatbot' %}" id="chatForm">
         {% csrf_token %}
-        <input type="text" name="message" class="msger-input" id="textInput" placeholder="Enter your message...">
+        <input type="text" name="message" class="msger-input" id="textInput" placeholder="Enter your message..." required>
         <button type="submit" name="messageb" class="msger-send-btn">Send</button>
     </form>
 </section>
@@ -80,10 +183,73 @@ Chatbot
 
 <script src='https://use.fontawesome.com/releases/v5.0.13/js/all.js'></script>
 <script>
-    window.setInterval(function () {
+    // Auto-scroll to bottom
+    function scrollToBottom() {
         var elem = document.getElementById('msger');
         elem.scrollTop = elem.scrollHeight;
-    }, 300);
+    }
+    
+    // Initial scroll
+    scrollToBottom();
+    
+    // Handle form submission with AJAX
+    document.getElementById('chatForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const messageInput = document.getElementById('textInput');
+        const message = messageInput.value.trim();
+        
+        if (!message) return;
+        
+        // Add user message to chat
+        addMessage(message, 'right-msg', 'You');
+        
+        // Clear input
+        messageInput.value = '';
+        
+        // Send message to server
+        fetch('{% url "chatbot" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            },
+            body: 'message=' + encodeURIComponent(message)
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Add bot response to chat
+            addMessage(data.response, 'left-msg', 'CoronaBot');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            addMessage('Sorry, I encountered an error. Please try again.', 'left-msg', 'CoronaBot');
+        });
+    });
+    
+    // Function to add messages to chat
+    function addMessage(text, messageClass, sender) {
+        const chatContainer = document.getElementById('msger');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `msg ${messageClass}`;
+        
+        const imgUrl = messageClass === 'left-msg' ? 
+            'https://image.flaticon.com/icons/svg/327/327779.svg' : 
+            'https://image.flaticon.com/icons/svg/145/145867.svg';
+        
+        messageDiv.innerHTML = `
+            <div class="msg-img" style="background-image: url(${imgUrl})"></div>
+            <div class="msg-bubble">
+                <div class="msg-info">
+                    <div class="msg-info-name">${sender}</div>
+                </div>
+                <div class="msg-text">${text}</div>
+            </div>
+        `;
+        
+        chatContainer.appendChild(messageDiv);
+        scrollToBottom();
+    }
 </script>
 
 {% endblock %}

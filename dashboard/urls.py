@@ -14,17 +14,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from django.conf.urls import url
+from django.urls import path, re_path
 from covid import views
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url('^$',views.indexPage,name='home'),
-    url(r'^chatBot/', views.chatBot,name="chatBot"),
-    url(r'^prediction/', views.prediction,name="prediction"),
-    url(r'^vaccination/', views.vaccination,name="vaccination"),
-    url('selectCountry',views.singleCountry,name="single"),
+    path('',views.indexPage,name='home'),
+    re_path(r'^chatbot-page/', views.chatbotPage,name="chatbot_page"),
+    re_path(r'^chatBot/', views.chatBot,name="chatbot"),
+    re_path(r'^prediction/', views.prediction,name="prediction"),
+    re_path(r'^vaccination/', views.vaccination,name="vaccination"),
+    path('selectCountry',views.singleCountry,name="single"),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
