@@ -42,18 +42,19 @@ Chatbot
   
   .msger {
     max-width: none !important;
-    width: calc(100vw - 16px) !important;
+    width: calc(100vw - 16px - 60%) !important; /* 30% padding on each side */
     height: calc(100vh - 16px) !important;
     border-radius: 8px !important;
     border: none !important;
     box-shadow: none !important;
     background: white !important;
-    margin: 8px !important;
+    margin: 8px auto !important; /* Center the container */
     padding: 0 !important;
     z-index: 1 !important;
     position: fixed !important;
     top: 0 !important;
-    left: 0 !important;
+    left: 30% !important; /* Add 30% padding on the left */
+    right: 30% !important; /* Add 30% padding on the right */
     display: flex !important;
     flex-direction: column !important;
   }

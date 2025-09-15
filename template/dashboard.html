@@ -6,31 +6,11 @@
 {% block styles %}
 {{ block.super }}
 <style>
-  
   /* Stats Cards */
   .stat-card {
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
-    margin-bottom: 20px;
-    border: none;
-  }
-  
-  .stat-card:hover {
-    transform: translateY(-5px);
-  }
-  
-  .stat-card.confirmed {
-    border-left: 5px solid #3498db;
-  }
-  
-  .stat-card.recovered {
-    border-left: 5px solid #2ecc71;
-  }
-  
-  .stat-card.deaths {
-    border-left: 5px solid #e74c3c;
-  }
     margin-bottom: 20px;
     border: none;
   }
@@ -439,6 +419,12 @@
 
 {% block scripts %}
 {{ block.super }}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="https://code.highcharts.com/maps/highmaps.js"></script>
+<script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/maps/modules/offline-exporting.js"></script>
+<script src="https://code.highcharts.com/mapdata/custom/world.js"></script>
 <!-- Load required libraries -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://code.highcharts.com/maps/highmaps.js"></script>
@@ -1028,7 +1014,6 @@ function setupEventListeners() {
       this.classList.add('active');
       
       // Update chart data based on selected type
-      // This is a simplified example - in a real app, you'd update the chart data
       console.log('Switched to view:', type);
     });
   });
@@ -1081,42 +1066,45 @@ function scrollToChatbot() {
     }, 500);
   }
 }
-    legend: {
-      display: false,
-    },
-    scales: {
-      xAxes: [
-        {
-          barPercentage: 1,
-        },
-      ],
-      yAxes: [
-        // {barPercentage: 1},
-        // {gridLines:{drawBorder: false}},
-        { ticks: { display: false } },
-        // {ticks: {mirror: true}},
-        { display: false },
-      ],
-      elements: {
-        rectangle: {
-          borderSkipped: "left",
-        },
+
+// Main initialization when DOM is fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+    try {
+        // Initialize all charts
+        initBarChart();
+        initLineChart();
+        initHeatmap();
+        initWorldMap();
+        
+        // Set up other event listeners
+        setupEventListeners();
+    } catch (error) {
+        console.error('Error initializing dashboard:', error);
+    }
+});
+
+// Initialize the bar chart
+function initBarChart() {
+    const ctx = document.getElementById('covidChart');
+    if (!ctx) return;
+    
+    try {
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: JSON.parse('{{ countryNames|safe|escapejs }}'),
+        datasets: [{
+          label: "Infected Counts",
+          backgroundColor: "rgb(50, 50, 221)",
+          borderColor: "rgb(255, 99, 132)",
+          data: JSON.parse('{{ barPlotVals|safe|escapejs }}')
+        }]
       },
-    },
-  };
-  var chart = new Chart(ctx, {
-    type: "horizontalBar",
-    data: {
-      labels: JSON.parse('{{ countryNames|safe|escapejs }}'),
-      datasets: [{
-        label: "Infected Counts",
-        backgroundColor: "rgb(50, 50, 221)",
-        borderColor: "rgb(255, 99, 132)",
-        data: JSON.parse('{{ barPlotVals|safe|escapejs }}')
-      }]
-    },
-    options: chartOptions
-  });
+      options: chartOptions
+    });
+  } catch (error) {
+    console.error('Error initializing chart:', error);
+  }
 </script>
 <!-- World Map -->
 <script>
@@ -1199,65 +1187,202 @@ function scrollToChatbot() {
 </script>
 <!-- Line Chart -->
 <script>
-  var dataset = {{ datasetsForLine| safe}};
+  var dataset = JSON.parse('{{ datasetsForLine|safe|escapejs }}');
   var chartOptions2 = {
+    responsive: true,
+    maintainAspectRatio: false,
     legend: {
-      display: true,
+      display: true
     },
     scales: {
-      yAxes: [
-        {
-          type: "linear",
-          display: true,
-          position: "left",
-          id: "y-axis-1",
-        },
-        {
-          type: "linear",
-          display: true,
-          position: "right",
-          id: "y-axis-2",
-
-          gridLines: {
-            drawOnChartArea: false,
-          },
-        },
-      ],
+      y: {
+        beginAtZero: true,
+        type: 'linear',
+        display: true,
+        position: 'left',
+        id: 'y-axis-1',
+        grid: {
+          drawOnChartArea: true
+        }
+      },
+      x: {
+        grid: {
+          display: false
+        }
+      },
+      y1: {
+        type: 'linear',
+        display: true,
+        position: 'right',
+        id: 'y-axis-2',
+        grid: {
+          drawOnChartArea: false
+        }
+      }
     },
   };
-  var ctx2 = document.getElementById("lineChart").getContext("2d");
-  var myLineChart = new Chart(ctx2, {
-    type: "line",
-    data: {
-      labels: {{ axisValue| safe}},
-  datasets: dataset,
-    },
-  options: chartOptions2,
-  });
-
-</script>
-<!-- Heat chart -->
-<script>
-  var options = {
-    series: JSON.parse('{{ dataForheatMap|safe|escapejs }}'),
-    chart: {
-      height: 6500,
-      type: "heatmap"
-    },
-    dataLabels: {
-      enabled: true,
-      position: "top"
-    },
-    colors: ["#008FFB"],
-    yaxis: {
-      show: false
-    },
-    xaxis: {
-      type: "category",
-      categories: JSON.parse('{{ dateCat|safe|escapejs }}')
+  
+  // Initialize line chart
+  const initLineChart = () => {
+    const ctx2 = document.getElementById("lineChart");
+    if (!ctx2) return;
+    
+    try {
+      const dataset = JSON.parse('{{ datasetsForLine|safe|escapejs }}');
+      new Chart(ctx2, {
+        type: "line",
+        data: {
+          labels: JSON.parse('{{ axisValue|safe|escapejs }}'),
+          datasets: dataset
+        },
+        options: chartOptions2
+      });
+    } catch (error) {
+      console.error('Error initializing line chart:', error);
     }
   };
-  var chart4 = new ApexCharts(document.querySelector("#heatchart"), options);
-  chart4.render();
+  
+  // Initialize heatmap
+  const initHeatmap = () => {
+    try {
+      const options = {
+        series: JSON.parse('{{ dataForheatMap|safe|escapejs }}'),
+        chart: {
+          height: 6500,
+          type: "heatmap"
+        },
+        dataLabels: {
+          enabled: true,
+          position: "top"
+        },
+        colors: ["#008FFB"],
+        yaxis: {
+          show: false
+        },
+        xaxis: {
+          type: "category",
+          categories: JSON.parse('{{ dateCat|safe|escapejs }}')
+        }
+      };
+      
+      const chartElement = document.querySelector("#heatchart");
+      if (chartElement) {
+        const chart4 = new ApexCharts(chartElement, options);
+        chart4.render();
+      }
+    } catch (error) {
+      console.error('Error initializing heatmap chart:', error);
+    }
+  };
+
+  // Initialize the bar chart
+const initBarChart = () => {
+    const ctx = document.getElementById('covidChart');
+    if (!ctx) return;
+    
+    try {
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: JSON.parse('{{ countryNames|safe|escapejs }}'),
+                datasets: [{
+                    label: 'Infected Counts',
+                    data: JSON.parse('{{ barPlotVals|safe|escapejs }}'),
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+    } catch (error) {
+        console.error('Error initializing bar chart:', error);
+    }
+};
+
+// Line chart initialization is already handled in the earlier initLineChart function
+// Heatmap initialization is already handled in the earlier initHeatmap function
+
+// Initialize the world map
+function initWorldMap() {
+    try {
+        const data2 = JSON.parse('{{ dataForMap|safe|escapejs }}');
+        
+        // Prevent logarithmic errors in color calculation
+        data2.forEach(function(p) {
+            p.value = (p.value < 1 ? 1 : p.value);
+        });
+
+        // Initiate the chart
+        Highcharts.mapChart('MyMapChart', {
+            chart: {
+                map: 'custom/world'
+            },
+            title: {
+                text: 'World Map COVID-19 Infection'
+            },
+            legend: {
+                title: {
+                    text: 'Infected Population Count',
+                    style: {
+                        color: (Highcharts.defaultOptions &&
+                                Highcharts.defaultOptions.legend &&
+                                Highcharts.defaultOptions.legend.title &&
+                                Highcharts.defaultOptions.legend.title.style &&
+                                Highcharts.defaultOptions.legend.title.style.color) || 'black'
+                    }
+                }
+            },
+            mapNavigation: {
+                enabled: true,
+                buttonOptions: {
+                    verticalAlign: 'bottom'
+                }
+            },
+            tooltip: {
+                backgroundColor: 'none',
+                borderWidth: 0,
+                shadow: false,
+                useHTML: true,
+                padding: 0,
+                pointFormat: '<span class="f32"><span class="flag {point.properties.hc-key}">' +
+                    '</span></span> <b>{point.name}<b><br>' +
+                    '<span style="font-size:25px">{point.value}</span>',
+                positioner: function() {
+                    return { x: 0, y: 250 };
+                }
+            },
+            colorAxis: {
+                min: 1,
+                max: 1000,
+                type: 'logarithmic'
+            },
+            series: [{
+                data: data2,
+                joinBy: ['iso-a3', 'code3'],
+                name: 'Infected Counts',
+                states: {
+                    hover: {
+                        color: '#a4edba'
+                    }
+                }
+            }]
+        });
+    } catch (error) {
+        console.error('Error initializing world map:', error);
+    }
+}
+
+// Set up event listeners
+function setupEventListeners() {
+    // Add any additional event listeners here
+    document.getElementById('refresh-btn')?.addEventListener('click', updateDashboard);
+}
 </script>
 {% endblock %}
