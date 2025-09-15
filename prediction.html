@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}COVID-19 Prediction Analysis{% endblock %}
+
+{% block styles %}
+<style>
+  .prediction-form {
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    margin-bottom: 2rem;
+  }
+
+  .prediction-form select {
+    border: 2px solid var(--primary-color);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    background: white;
+    color: var(--text-color);
+    min-width: 200px;
+  }
+
+  .prediction-form select:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+  }
+
+  .chart-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .chart-card {
+    background: var(--card-bg);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease;
+  }
+
+  .chart-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .chart-card img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .chart-card .card-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 1rem;
+    font-weight: 600;
+  }
+
+  .featured-chart {
+    text-align: center;
+    margin: 2rem 0;
+  }
+
+  .featured-chart .card {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <h1><i class="fas fa-chart-line me-3"></i>COVID-19 Prediction Analysis</h1>
+    <p>Advanced predictive modeling and trend analysis for COVID-19 data</p>
+  </div>
+</div>
+
+<div class="container">
+  <!-- Country Selection Form -->
+  <div class="prediction-form">
+    <div class="row align-items-center">
+      <div class="col-md-8">
+        <h4 class="mb-3"><i class="fas fa-globe me-2"></i>Select Country for Analysis</h4>
+        <form method="post" action="{% url 'prediction' %}" class="d-flex align-items-center gap-3">
+          {% csrf_token %}
+          <select name="drop1" class="form-select">
+            {% for i in Country %}
+            <option value="{{i}}">{{i}}</option>
+            {% endfor %}
+          </select>
+          <button type="submit" class="btn">
+            <i class="fas fa-search me-2"></i>Analyze
+          </button>
+        </form>
+      </div>
+      <div class="col-md-4 text-end">
+        <i class="fas fa-chart-area fa-4x text-primary opacity-50"></i>
+      </div>
+    </div>
+  </div>
+  <!-- Analysis Charts Grid -->
+  <div class="chart-grid">
+    <div class="chart-card">
+      <div class="card-header">
+        <i class="fas fa-chart-bar me-2"></i>Total Cases Analysis
+      </div>
+      <img src="{% static 'img/total-cases.png' %}" alt="Total Cases Analysis" />
+    </div>
+    
+    <div class="chart-card">
+      <div class="card-header">
+        <i class="fas fa-chart-line me-2"></i>Active Cases Trend
+      </div>
+      <img src="{% static 'img/active-cases.png' %}" alt="Active Cases Analysis" />
+    </div>
+    
+    <div class="chart-card">
+      <div class="card-header">
+        <i class="fas fa-chart-area me-2"></i>Cumulative Cases
+      </div>
+      <img src="{% static 'img/cummulative-cases.png' %}" alt="Cumulative Cases Analysis" />
+    </div>
+    
+    <div class="chart-card">
+      <div class="card-header">
+        <i class="fas fa-skull me-2"></i>Cumulative Deaths
+      </div>
+      <img src="{% static 'img/cummulative-deaths.png' %}" alt="Cumulative Deaths Analysis" />
+    </div>
+  </div>
+
+  <!-- Prediction Results -->
+  {% if selectedCountry %}
+  <div class="chart-grid">
+    <div class="chart-card">
+      <div class="card-header">
+        <i class="fas fa-crystal-ball me-2"></i>Confirmed Case Predictions: {{selectedCountry}}
+      </div>
+      <img src="{{imagesAppend}}" alt="Prediction Results for {{selectedCountry}}" />
+    </div>
+    
+    <div class="chart-card">
+      <div class="card-header">
+        <i class="fas fa-balance-scale me-2"></i>New vs Recovered Cases
+      </div>
+      <img src="{% static 'img/new-vs-recovered.png' %}" alt="New vs Recovered Cases" />
+    </div>
+  </div>
+  {% endif %}
+
+ 
+{% endblock %}

@@ -1,0 +1,267 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Vaccination Analysis - COVID-19 Tracker{% endblock %}
+
+{% block stylescss %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'css/vaccination.css'%}">
+<style>
+  .page-header {
+    background: var(--primary-gradient);
+    color: white;
+    padding: 3rem 0;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  
+  .page-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  
+  .page-header p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin: 0;
+  }
+  
+  .vaccine-card {
+    perspective: 1000px;
+    height: 400px;
+  }
+  
+  .vaccine-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+  }
+  
+  .vaccine-card:hover .vaccine-card-inner {
+    transform: rotateY(180deg);
+  }
+  
+  .vaccine-card-front, .vaccine-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+  }
+  
+  .vaccine-card-back {
+    transform: rotateY(180deg);
+  }
+  
+  .vaccine-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .analysis-buttons {
+    background: white;
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin: 2rem 0;
+  }
+  
+  .analysis-buttons .btn {
+    width: 100%;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    font-size: 1.1rem;
+    background: var(--primary-gradient);
+    border: none;
+    color: white;
+  }
+  
+  .analysis-buttons .btn:hover {
+    background: linear-gradient(135deg, #0d47a1 0%, #1565c0 100%);
+    transform: translateY(-2px);
+  }
+  
+  .info-cards {
+    margin: 3rem 0;
+  }
+  
+  .info-cards .card {
+    height: 100%;
+  }
+  
+  .info-cards img {
+    border-radius: var(--border-radius);
+  }
+  
+  .results-section {
+    margin-top: 3rem;
+  }
+  
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+  }
+  
+  .result-card {
+    background: white;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+    transition: var(--transition);
+  }
+  
+  .result-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  }
+  
+  .result-card img {
+    width: 100%;
+    height: auto;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <h1><i class="fas fa-syringe me-3"></i>Vaccination Analysis</h1>
+    <p>Comprehensive COVID-19 vaccination data and insights</p>
+  </div>
+</div>
+<div class="container">
+  <div class="row align-items-center">
+    <!-- Left Vaccine Card -->
+    <div class="col-lg-4 mb-4">
+      <div class="vaccine-card">
+        <div class="vaccine-card-inner">
+          <div class="vaccine-card-front">
+            <img src="{% static 'img/vaccinelogos/bharatcovaxin.jpg' %}" alt="Bharat Biotech Covaxin" />
+          </div>
+          <div class="vaccine-card-back">
+            <img src="{% static 'img/vaccinelogos/sinopharm.png' %}" alt="Sinopharm" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Analysis Buttons -->
+    <div class="col-lg-4 mb-4">
+      <div class="analysis-buttons">
+        <h4 class="text-center mb-4">Vaccination Analysis</h4>
+        <form action="" method="post">
+          {% csrf_token %}
+          <button type="submit" name="dailyv" class="btn">
+            <i class="fas fa-chart-line me-2"></i>Daily Vaccination Per Country
+          </button>
+          <button type="submit" name="dailyp" class="btn">
+            <i class="fas fa-chart-bar me-2"></i>Daily Vaccination Per Million
+          </button>
+          <button type="submit" name="estimate" class="btn">
+            <i class="fas fa-analytics me-2"></i>Estimate Comparison Per Country
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Right Vaccine Card -->
+    <div class="col-lg-4 mb-4">
+      <div class="vaccine-card">
+        <div class="vaccine-card-inner">
+          <div class="vaccine-card-front">
+            <img src="{% static 'img/vaccinelogos/pfizer2.jpeg' %}" alt="Pfizer-BioNTech" />
+          </div>
+          <div class="vaccine-card-back">
+            <img src="{% static 'img/vaccinelogos/moderna.jpg' %}" alt="Moderna" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Information Cards -->
+  <div class="info-cards">
+    <div class="row">
+      <div class="col-md-6 mb-4">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0"><i class="fas fa-chart-line me-2"></i>Vaccination Progress</h5>
+          </div>
+          <div class="card-body p-0">
+            <img class="w-100" src="{% static 'img/total-vaccination-progress.png' %}" alt="Total Vaccination Progress" />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 mb-4">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Vaccination Phases</h5>
+          </div>
+          <div class="card-body p-0">
+            <img class="w-100" src="{% static 'img/vaccination-phases.png' %}" alt="Vaccination Phases" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results Section -->
+  <div class="results-section">
+    {% if imageleft %}
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="vaccine-card">
+          <div class="vaccine-card-inner">
+            <div class="vaccine-card-front">
+              <img src="{{imageleft}}" alt="Analysis Result 1" />
+            </div>
+            <div class="vaccine-card-back">
+              <img src="{{imageright}}" alt="Analysis Result 2" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="text-center mb-4">
+      <div class="card">
+        <div class="card-body">
+          <img src="{% static 'img/main1.png' %}" alt="Main Analysis" class="img-fluid" />
+        </div>
+      </div>
+    </div>
+
+    {% if estimatedgraph %}
+    <div class="results-grid">
+      <div class="result-card">
+        <img src="{% static 'img/middle1.png' %}" alt="Analysis Chart 1" />
+      </div>
+      <div class="result-card">
+        <img src="{% static 'img/bottom1.png' %}" alt="Analysis Chart 2" />
+      </div>
+      <div class="result-card">
+        <img src="{% static 'img/bottom2.png' %}" alt="Analysis Chart 3" />
+      </div>
+      <div class="result-card">
+        <img src="{% static 'img/middle2.png' %}" alt="Analysis Chart 4" />
+      </div>
+      <div class="result-card">
+        <img src="{% static 'img/middle3.png' %}" alt="Analysis Chart 5" />
+      </div>
+      <div class="result-card">
+        <img src="{% static 'img/bottom3.png' %}" alt="Analysis Chart 6" />
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
