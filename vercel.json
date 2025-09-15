@@ -2,17 +2,12 @@
   "version": 2,
   "builds": [
     {
-      "src": "template/**/*",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "static/**/*",
+      "src": "**/*",
       "use": "@vercel/static"
     }
   ],
   "routes": [
-    { "src": "/static/(.*)", "dest": "/static/$1" },
-    { "src": "/(.*)", "dest": "/template/$1" },
-    { "src": "/", "dest": "/template/index.html" }
+    { "src": "/(.*)", "dest": "/$1" },
+    { "src": "/", "dest": "/dashboard.html" }
   ]
 }
