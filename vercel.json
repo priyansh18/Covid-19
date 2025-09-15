@@ -2,39 +2,17 @@
   "version": 2,
   "builds": [
     {
-      "src": "template/**/*.html",
+      "src": "template/**/*",
       "use": "@vercel/static"
     },
     {
       "src": "static/**/*",
       "use": "@vercel/static"
-    },
-    {
-      "src": "*.{js,html,css}",
-      "use": "@vercel/static"
     }
   ],
   "routes": [
-    {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
-    },
-    {
-      "src": "/(.*)\\.html",
-      "dest": "/template/$1.html"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/template/$1.html"
-    },
-    {
-      "src": "/",
-      "dest": "/template/index.html"
-    },
-    {
-      "src": "/(.*)",
-      "status": 200,
-      "dest": "/template/404.html"
-    }
+    { "src": "/static/(.*)", "dest": "/static/$1" },
+    { "src": "/(.*)", "dest": "/template/$1" },
+    { "src": "/", "dest": "/template/index.html" }
   ]
 }
