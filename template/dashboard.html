@@ -146,41 +146,85 @@
       </div>
     </div>
   </div>
-  <!-- Charts Row -->
+  
+  <!-- Prevention Tips -->
   <div class="row mb-4">
-    <!-- Main Chart -->
     <div class="col-lg-8">
       <div class="card h-100">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          <h5 class="mb-0">COVID-19 Global Trend (Last 30 Days)</h5>
-          <div class="btn-group btn-group-sm" role="group">
-            <button type="button" class="btn btn-outline-secondary active" data-type="cases">Cases</button>
-            <button type="button" class="btn btn-outline-secondary" data-type="deaths">Deaths</button>
-            <button type="button" class="btn btn-outline-secondary" data-type="recovered">Recovered</button>
-          </div>
+        <div class="card-header">
+          <h5 class="mb-0"><i class="fas fa-shield-virus me-2"></i>COVID-19 Prevention Tips</h5>
         </div>
         <div class="card-body">
-          <canvas id="covidTrendChart" height="300"></canvas>
+          <div class="row g-4">
+            <div class="col-md-6">
+              <div class="d-flex">
+                <div class="bg-light rounded-circle p-3 me-3">
+                  <i class="fas fa-hands-wash text-primary fa-2x"></i>
+                </div>
+                <div>
+                  <h6>Wash Hands Frequently</h6>
+                  <p class="text-muted small mb-0">Use soap and water for at least 20 seconds, especially after being in public places.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="d-flex">
+                <div class="bg-light rounded-circle p-3 me-3">
+                  <i class="fas fa-head-side-mask text-primary fa-2x"></i>
+                </div>
+                <div>
+                  <h6>Wear a Mask</h6>
+                  <p class="text-muted small mb-0">Wear a mask in public settings and when around people who don't live in your household.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="d-flex">
+                <div class="bg-light rounded-circle p-3 me-3">
+                  <i class="fas fa-people-arrows text-primary fa-2x"></i>
+                </div>
+                <div>
+                  <h6>Maintain Social Distance</h6>
+                  <p class="text-muted small mb-0">Keep at least 6 feet (about 2 arms' length) from others.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="d-flex">
+                <div class="bg-light rounded-circle p-3 me-3">
+                  <i class="fas fa-syringe text-primary fa-2x"></i>
+                </div>
+                <div>
+                  <h6>Get Vaccinated</h6>
+                  <p class="text-muted small mb-0">Authorized COVID-19 vaccines can help protect you from COVID-19.</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
     
-    <!-- World Map -->
+    <!-- COVID-19 Awareness -->
     <div class="col-lg-4">
       <div class="card h-100">
         <div class="card-header">
-          <h5 class="mb-0">Global Cases Heatmap</h5>
+          <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Stay Safe</h5>
         </div>
         <div class="card-body p-0">
-          <div id="worldMap" style="height: 300px;"></div>
+          <img src="https://img.freepik.com/free-vector/coronavirus-prevention-banner-with-hand-wearing-medical-mask_107791-2375.jpg" alt="COVID-19 Prevention" class="img-fluid rounded-bottom">
+          <div class="p-3">
+            <h6>Know How it Spreads</h6>
+            <p class="small text-muted">The virus spreads mainly from person to person through respiratory droplets when an infected person coughs, sneezes, or talks.</p>
+            <a href="#" class="btn btn-sm btn-outline-primary">Learn More</a>
+          </div>
         </div>
       </div>
     </div>
   </div>
   
-  <!-- Second Row -->
+  <!-- Top Countries -->
   <div class="row mb-4">
-    <!-- Top Countries -->
     <div class="col-lg-6">
       <div class="card h-100">
         <div class="card-header">
@@ -293,12 +337,38 @@
     </div>
   </div>
   
-  <!-- Charts Row -->
+  <!-- Symptoms Section -->
   <div class="row mb-4">
     <div class="col-lg-8">
-      <div class="chart-container">
-        <h5 class="mb-4"><i class="fas fa-chart-line me-2"></i>Global Trend (Last 30 Days)</h5>
-        <canvas id="covidChart" height="300"></canvas>
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="fas fa-exclamation-triangle me-2 text-warning"></i>Common Symptoms</h5>
+        </div>
+        <div class="card-body">
+          <div class="row g-4">
+            <div class="col-md-4 text-center">
+              <div class="bg-light rounded-circle p-3 mb-2 mx-auto" style="width: 100px; height: 100px;">
+                <i class="fas fa-thermometer-three-quarters text-danger fa-3x"></i>
+              </div>
+              <h6>Fever</h6>
+              <p class="small text-muted mb-0">High temperature</p>
+            </div>
+            <div class="col-md-4 text-center">
+              <div class="bg-light rounded-circle p-3 mb-2 mx-auto" style="width: 100px; height: 100px;">
+                <i class="fas fa-wind text-danger fa-3x"></i>
+              </div>
+              <h6>Cough</h6>
+              <p class="small text-muted mb-0">Dry cough</p>
+            </div>
+            <div class="col-md-4 text-center">
+              <div class="bg-light rounded-circle p-3 mb-2 mx-auto" style="width: 100px; height: 100px;">
+                <i class="fas fa-tired text-danger fa-3x"></i>
+              </div>
+              <h6>Tiredness</h6>
+              <p class="small text-muted mb-0">Feeling of fatigue</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     
@@ -419,61 +489,50 @@
 
 {% block scripts %}
 {{ block.super }}
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<script src="https://code.highcharts.com/maps/highmaps.js"></script>
-<script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/maps/modules/offline-exporting.js"></script>
-<script src="https://code.highcharts.com/mapdata/custom/world.js"></script>
-<!-- Load required libraries -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://code.highcharts.com/maps/highmaps.js"></script>
-<script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/maps/modules/data.js"></script>
-<script src="https://code.highcharts.com/mapdata/custom/world.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<!-- Font Awesome for icons -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<!-- Axios for API calls -->
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="https://code.highcharts.com/maps/modules/offline-exporting.js"></script>
-<script src="https://code.highcharts.com/mapdata/custom/world.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 <script>
-//<![CDATA[
-  // Global Chart.js defaults
-  Chart.defaults.font.family = '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif';
-  Chart.defaults.plugins.legend.display = true;
-  Chart.defaults.plugins.legend.position = 'top';
-//]]>
+// Smooth scrolling for anchor links
+document.addEventListener('DOMContentLoaded', function() {
+  // Smooth scrolling
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth'
+        });
+      }
+    });
+  });
+
+  // Initialize tooltips if Bootstrap is available
+  if (typeof bootstrap !== 'undefined') {
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function(tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+  }
+
+  // Add animation to stats cards
+  const statCards = document.querySelectorAll('.stat-card');
+  statCards.forEach(card => {
+    card.addEventListener('mouseenter', function() {
+      this.style.transform = 'translateY(-5px)';
+      this.style.boxShadow = '0 10px 20px rgba(0,0,0,0.1)';
+    });
+    
+    card.addEventListener('mouseleave', function() {
+      this.style.transform = 'translateY(0)';
+      this.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
+    });
+  });
+});
 </script>
-
-<script>
-//<![CDATA[
-  // Global Chart.js defaults
-  Chart.defaults.font.family = '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif';
-  Chart.defaults.plugins.legend.display = true;
-  Chart.defaults.plugins.legend.position = 'top';
-
-  // Initialize charts when document is ready
-  document.addEventListener('DOMContentLoaded', function() {
-    // Main COVID-19 Chart
-    const ctx = document.getElementById('covidChart');
-    if (ctx) {
-      try {
-        // Parse the JSON data from Django template
-        const chartData = JSON.parse('{{ chart_data|escapejs|safe }}');
-        const formatNumber = (num) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        
-        const chartOptions = {
-      
-          responsive: true,
-          maintainAspectRatio: false,
-          interaction: { mode: 'index', intersect: false },
-          plugins: {
-            tooltip: {
-              callbacks: {
-                label: function(context) {
-                  let label = context.dataset.label || '';
-                  if (label) label += ': ';
                   if (context.parsed.y !== null) {
                     label += formatNumber(context.parsed.y);
                   }
