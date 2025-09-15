@@ -1,0 +1,14 @@
+{
+  "name": "covid-19-dashboard",
+  "version": "1.0.0",
+  "description": "COVID-19 Dashboard and Prediction System",
+  "scripts": {
+    "build": "python3.9 -m pip install --upgrade pip && python3.9 -m pip install -r requirements.txt && python3.9 manage.py collectstatic --noinput --clear"
+  },
+  "dependencies": {
+    "vercel": "^28.4.8"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
