@@ -1,15 +1,10 @@
 #!/bin/bash
-set -e  # Exit on error
+set -e
 
-echo "🚀 Starting build process..."
+echo "Installing dependencies..."
+pip install -r requirements.txt
 
-# Install Python dependencies
-echo "📦 Installing Python dependencies..."
-python3.9 -m pip install --upgrade pip
-python3.9 -m pip install -r requirements.txt
+echo "Collecting static files..."
+python manage.py collectstatic --noinput --clear
 
-# Collect static files
-echo "🛠️  Collecting static files..."
-python3.9 manage.py collectstatic --noinput --clear
-
-echo "✅ Build completed successfully!"
+echo "Build complete!"
