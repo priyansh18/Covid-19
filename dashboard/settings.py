@@ -20,10 +20,10 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-default-dev-key')
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
-# Add .vercel.app to ALLOWED_HOSTS for Vercel deployments
-if 'VERCEL_ENV' in os.environ and os.environ.get('VERCEL_ENV') == 'production':
-    ALLOWED_HOSTS.append('.vercel.app')
-    ALLOWED_HOSTS.append('.now.sh')
+# Add Vercel hosts
+if os.environ.get('VERCEL'):
+    ALLOWED_HOSTS = ['*']
+    DEBUG = False
 
 
 # Application definition
@@ -128,5 +128,5 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Whitenoise configuration for static files
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
