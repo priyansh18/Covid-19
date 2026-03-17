@@ -3,72 +3,69 @@
 
 {% block title %}COVID-19 Prediction Analysis{% endblock %}
 
-{% block styles %}
+{% block stylescss %}
 <style>
-  .prediction-form {
-    background: var(--card-bg);
-    border-radius: 15px;
-    padding: 2rem;
-    box-shadow: var(--shadow);
-    margin-bottom: 2rem;
-  }
-
-  .prediction-form select {
-    border: 2px solid var(--primary-color);
-    border-radius: 10px;
-    padding: 0.75rem 1rem;
-    font-size: 1rem;
-    background: white;
-    color: var(--text-color);
-    min-width: 200px;
-  }
-
-  .prediction-form select:focus {
-    outline: none;
-    border-color: var(--secondary-color);
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-  }
-
   .chart-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-    gap: 2rem;
-    margin-bottom: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+    gap: 1.5rem;
   }
 
   .chart-card {
-    background: var(--card-bg);
-    border-radius: 15px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
     overflow: hidden;
+    transition: var(--transition);
     box-shadow: var(--shadow);
-    transition: transform 0.3s ease;
   }
 
   .chart-card:hover {
-    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-3px);
+  }
+
+  .chart-card-header {
+    padding: 0.85rem 1.15rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 
   .chart-card img {
     width: 100%;
     height: auto;
-    object-fit: cover;
+    display: block;
   }
 
-  .chart-card .card-header {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    color: white;
-    padding: 1rem;
+  .country-select-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    margin-bottom: 2rem;
+  }
+
+  .country-select-card h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .selected-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--primary);
+    color: #fff;
+    padding: 0.35rem 0.85rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
     font-weight: 600;
-  }
-
-  .featured-chart {
-    text-align: center;
-    margin: 2rem 0;
-  }
-
-  .featured-chart .card {
-    max-width: 800px;
-    margin: 0 auto;
   }
 </style>
 {% endblock %}
@@ -76,83 +73,90 @@
 {% block content %}
 <div class="page-header">
   <div class="container">
-    <h1><i class="fas fa-chart-line me-3"></i>COVID-19 Prediction Analysis</h1>
+    <h1><i class="fas fa-chart-line me-2" aria-hidden="true"></i>Prediction Analysis</h1>
     <p>Advanced predictive modeling and trend analysis for COVID-19 data</p>
   </div>
 </div>
 
 <div class="container">
-  <!-- Country Selection Form -->
-  <div class="prediction-form">
+  <!-- Country Selection -->
+  <div class="country-select-card">
     <div class="row align-items-center">
-      <div class="col-md-8">
-        <h4 class="mb-3"><i class="fas fa-globe me-2"></i>Select Country for Analysis</h4>
-        <form method="post" action="{% url 'prediction' %}" class="d-flex align-items-center gap-3">
+      <div class="col-lg-8">
+        <h2><i class="fas fa-globe me-2 text-primary" aria-hidden="true"></i>Select Country for Analysis</h2>
+        <form method="post" action="{% url 'prediction' %}" class="d-flex flex-wrap align-items-center gap-2">
           {% csrf_token %}
-          <select name="drop1" class="form-select">
-            {% for i in Country %}
-            <option value="{{i}}">{{i}}</option>
+          <label for="countrySelect" class="visually-hidden">Select country</label>
+          <select name="drop1" id="countrySelect" class="form-select" style="max-width:280px;" aria-label="Select country for prediction analysis">
+            {% for country in Country %}
+            <option value="{{ country }}" {% if country == selectedCountry %}selected{% endif %}>{{ country }}</option>
             {% endfor %}
           </select>
-          <button type="submit" class="btn">
-            <i class="fas fa-search me-2"></i>Analyze
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-search" aria-hidden="true"></i> Analyze
           </button>
         </form>
       </div>
-      <div class="col-md-4 text-end">
-        <i class="fas fa-chart-area fa-4x text-primary opacity-50"></i>
+      <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+        {% if selectedCountry and selectedCountry != "Worldwide" %}
+        <span class="selected-badge">
+          <i class="fas fa-map-marker-alt" aria-hidden="true"></i> {{ selectedCountry }}
+        </span>
+        {% endif %}
       </div>
-    </div>
-  </div>
-  <!-- Analysis Charts Grid -->
-  <div class="chart-grid">
-    <div class="chart-card">
-      <div class="card-header">
-        <i class="fas fa-chart-bar me-2"></i>Total Cases Analysis
-      </div>
-      <img src="{% static 'img/total-cases.png' %}" alt="Total Cases Analysis" />
-    </div>
-    
-    <div class="chart-card">
-      <div class="card-header">
-        <i class="fas fa-chart-line me-2"></i>Active Cases Trend
-      </div>
-      <img src="{% static 'img/active-cases.png' %}" alt="Active Cases Analysis" />
-    </div>
-    
-    <div class="chart-card">
-      <div class="card-header">
-        <i class="fas fa-chart-area me-2"></i>Cumulative Cases
-      </div>
-      <img src="{% static 'img/cummulative-cases.png' %}" alt="Cumulative Cases Analysis" />
-    </div>
-    
-    <div class="chart-card">
-      <div class="card-header">
-        <i class="fas fa-skull me-2"></i>Cumulative Deaths
-      </div>
-      <img src="{% static 'img/cummulative-deaths.png' %}" alt="Cumulative Deaths Analysis" />
     </div>
   </div>
 
-  <!-- Prediction Results -->
-  {% if selectedCountry %}
-  <div class="chart-grid">
+  <!-- Analysis Charts -->
+  <h2 class="h5 fw-bold mb-3"><i class="fas fa-chart-bar me-2 text-primary" aria-hidden="true"></i>Global Analysis</h2>
+  <div class="chart-grid mb-4">
     <div class="chart-card">
-      <div class="card-header">
-        <i class="fas fa-crystal-ball me-2"></i>Confirmed Case Predictions: {{selectedCountry}}
+      <div class="chart-card-header">
+        <i class="fas fa-chart-bar text-primary" aria-hidden="true"></i> Total Cases Analysis
       </div>
-      <img src="{{imagesAppend}}" alt="Prediction Results for {{selectedCountry}}" />
+      <img src="{% static 'img/total-cases.png' %}" alt="Total Cases Analysis chart showing global cumulative case counts" loading="lazy">
     </div>
-    
+
     <div class="chart-card">
-      <div class="card-header">
-        <i class="fas fa-balance-scale me-2"></i>New vs Recovered Cases
+      <div class="chart-card-header">
+        <i class="fas fa-chart-line text-warning" aria-hidden="true"></i> Active Cases Trend
       </div>
-      <img src="{% static 'img/new-vs-recovered.png' %}" alt="New vs Recovered Cases" />
+      <img src="{% static 'img/active-cases.png' %}" alt="Active Cases Trend chart showing currently active cases over time" loading="lazy">
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <i class="fas fa-chart-area text-success" aria-hidden="true"></i> Cumulative Cases
+      </div>
+      <img src="{% static 'img/cummulative-cases.png' %}" alt="Cumulative Cases chart showing total confirmed cases over time" loading="lazy">
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <i class="fas fa-chart-area text-danger" aria-hidden="true"></i> Cumulative Deaths
+      </div>
+      <img src="{% static 'img/cummulative-deaths.png' %}" alt="Cumulative Deaths chart showing total death count over time" loading="lazy">
+    </div>
+  </div>
+
+  <!-- Country-Specific Predictions -->
+  {% if selectedCountry and selectedCountry != "Worldwide" %}
+  <h2 class="h5 fw-bold mb-3"><i class="fas fa-bullseye me-2 text-danger" aria-hidden="true"></i>Predictions for {{ selectedCountry|title }}</h2>
+  <div class="chart-grid mb-4">
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <i class="fas fa-crystal-ball text-primary" aria-hidden="true"></i> Confirmed Case Predictions
+      </div>
+      <img src="{{ imagesAppend }}" alt="Prediction chart for confirmed cases in {{ selectedCountry }}" loading="lazy">
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <i class="fas fa-balance-scale text-info" aria-hidden="true"></i> New vs Recovered Cases
+      </div>
+      <img src="{% static 'img/new-vs-recovered.png' %}" alt="Comparison chart of new cases versus recovered cases" loading="lazy">
     </div>
   </div>
   {% endif %}
-
- 
+</div>
 {% endblock %}

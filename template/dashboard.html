@@ -3,255 +3,290 @@
 
 {% block title %}COVID-19 Dashboard - Live Updates{% endblock %}
 
-{% block styles %}
-{{ block.super }}
+{% block stylescss %}
 <style>
-  /* Stats Cards */
+  .hero-banner {
+    background: linear-gradient(135deg, #2563eb 0%, #7c3aed 50%, #06b6d4 100%);
+    color: #fff;
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-banner::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  .hero-content { position: relative; z-index: 1; }
+
   .stat-card {
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-    margin-bottom: 20px;
-    border: none;
+    border-left: 4px solid transparent;
+    transition: all 0.2s ease;
   }
-  
+
   .stat-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
   }
-  
-  .stat-card.confirmed {
-    border-left: 5px solid #3498db;
+
+  .stat-card.confirmed { border-left-color: #3b82f6; }
+  .stat-card.recovered { border-left-color: #10b981; }
+  .stat-card.deaths { border-left-color: #ef4444; }
+  .stat-card.active { border-left-color: #f59e0b; }
+
+  .stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
   }
-  
-  .stat-card.recovered {
-    border-left: 5px solid #2ecc71;
-  }
-  
-  .stat-card.deaths {
-    border-left: 5px solid #e74c3c;
-  }
-  
-  .stat-card.active {
-    border-left: 5px solid #f39c12;
-  }
-  
+
   .stat-value {
-    font-size: 1.8rem;
-    font-weight: 700;
+    font-size: 1.75rem;
+    font-weight: 800;
+    line-height: 1.2;
   }
-  
+
   .stat-label {
-    color: #7f8c8d;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-  
-  .stat-change {
+    color: var(--text-muted);
     font-size: 0.8rem;
-    font-weight: 500;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
-  
+
   .country-flag {
-    width: 30px;
-    height: 20px;
-    margin-right: 10px;
+    width: 24px;
+    height: 16px;
     border-radius: 2px;
+    object-fit: cover;
   }
-  
-  .chart-container {
-    background: white;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 30px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+
+  .table th {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    font-weight: 600;
+    border-bottom-width: 1px;
   }
-  
-  .last-updated {
-    font-size: 0.85rem;
-    color: #7f8c8d;
-    text-align: right;
-    margin-bottom: 20px;
+
+  .table td { vertical-align: middle; font-size: 0.9rem; }
+
+  .prevention-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .symptom-card {
+    text-align: center;
+    padding: 1.5rem 1rem;
+    border-radius: var(--radius);
+    background: #fef2f2;
+    transition: var(--transition);
+  }
+
+  .symptom-card:hover { transform: translateY(-2px); }
+
+  .symptom-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: #fee2e2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.75rem;
+  }
+
+  .quick-action {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--text);
+    transition: var(--transition);
+  }
+
+  .quick-action:hover {
+    border-color: var(--primary);
+    background: var(--primary-light);
+    color: var(--primary);
+    transform: translateX(4px);
+  }
+
+  .quick-action i { font-size: 1.5rem; color: var(--primary); }
+
+  @media (max-width: 768px) {
+    .stat-value { font-size: 1.3rem; }
+    .hero-banner { padding: 1.5rem 0; }
   }
 </style>
 {% endblock %}
 
 {% block content %}
+<!-- Hero Banner -->
+<section class="hero-banner" aria-label="Dashboard overview">
+  <div class="container hero-content">
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <h1 class="fw-bold mb-1" style="font-size:1.75rem;">
+          <i class="fas fa-chart-pie me-2" aria-hidden="true"></i>Global COVID-19 Dashboard
+        </h1>
+        <p class="mb-0 opacity-75">Real-time pandemic statistics and insights</p>
+      </div>
+      <div class="col-lg-4 text-lg-end mt-2 mt-lg-0">
+        <small class="opacity-75">
+          <i class="fas fa-clock me-1" aria-hidden="true"></i>Updated: {{ last_updated }}
+        </small>
+      </div>
+    </div>
+  </div>
+</section>
 
-<div class="container py-3">
+<div class="container">
+  {% if error %}
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <i class="fas fa-exclamation-triangle me-2" aria-hidden="true"></i> {{ error }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endif %}
+
   <!-- Stats Cards -->
+  <section aria-label="Global statistics">
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-lg-3">
+        <div class="card stat-card confirmed h-100">
+          <div class="card-body d-flex align-items-center gap-3">
+            <div class="stat-icon bg-primary bg-opacity-10">
+              <i class="fas fa-virus text-primary" aria-hidden="true"></i>
+            </div>
+            <div>
+              <div class="stat-label">Confirmed</div>
+              <div class="stat-value text-primary">{{ global_data.cases|intcomma }}</div>
+              {% if global_data.todayCases %}
+              <small class="text-danger fw-500">
+                <i class="fas fa-arrow-up" aria-hidden="true"></i> +{{ global_data.todayCases|intcomma }} today
+              </small>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 col-lg-3">
+        <div class="card stat-card recovered h-100">
+          <div class="card-body d-flex align-items-center gap-3">
+            <div class="stat-icon" style="background:#d1fae5;">
+              <i class="fas fa-heart-pulse text-success" aria-hidden="true"></i>
+            </div>
+            <div>
+              <div class="stat-label">Recovered</div>
+              <div class="stat-value text-success">{{ global_data.recovered|intcomma }}</div>
+              {% if global_data.todayRecovered %}
+              <small class="text-success fw-500">
+                <i class="fas fa-arrow-up" aria-hidden="true"></i> +{{ global_data.todayRecovered|intcomma }} today
+              </small>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 col-lg-3">
+        <div class="card stat-card deaths h-100">
+          <div class="card-body d-flex align-items-center gap-3">
+            <div class="stat-icon" style="background:#fee2e2;">
+              <i class="fas fa-heart-broken text-danger" aria-hidden="true"></i>
+            </div>
+            <div>
+              <div class="stat-label">Deaths</div>
+              <div class="stat-value text-danger">{{ global_data.deaths|intcomma }}</div>
+              {% if global_data.todayDeaths %}
+              <small class="text-danger fw-500">
+                <i class="fas fa-arrow-up" aria-hidden="true"></i> +{{ global_data.todayDeaths|intcomma }} today
+              </small>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 col-lg-3">
+        <div class="card stat-card active h-100">
+          <div class="card-body d-flex align-items-center gap-3">
+            <div class="stat-icon" style="background:#fef3c7;">
+              <i class="fas fa-bed-pulse text-warning" aria-hidden="true"></i>
+            </div>
+            <div>
+              <div class="stat-label">Active</div>
+              <div class="stat-value text-warning">{{ global_data.active|intcomma }}</div>
+              {% if global_data.critical %}
+              <small class="text-muted fw-500">
+                <i class="fas fa-triangle-exclamation" aria-hidden="true"></i> {{ global_data.critical|intcomma }} critical
+              </small>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Grid -->
   <div class="row g-4 mb-4">
-    <div class="col-md-3">
-      <div class="card stat-card confirmed h-100">
-        <div class="card-body">
-          <div class="d-flex justify-content-between align-items-center">
-            <div>
-              <h6 class="text-uppercase text-muted mb-1">Confirmed</h6>
-              <h3 class="mb-0">{{ global_data.cases|intcomma }}</h3>
-              <small class="text-danger"><i class="fas fa-arrow-up"></i> {{ global_data.todayCases|intcomma }} today</small>
-            </div>
-            <div class="icon-shape bg-soft-primary rounded-circle p-3">
-              <i class="fas fa-virus text-primary"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card stat-card recovered h-100">
-        <div class="card-body">
-          <div class="d-flex justify-content-between align-items-center">
-            <div>
-              <h6 class="text-uppercase text-muted mb-1">Recovered</h6>
-              <h3 class="mb-0">{{ global_data.recovered|intcomma }}</h3>
-              <small class="text-success"><i class="fas fa-arrow-up"></i> {{ global_data.todayRecovered|intcomma }} today</small>
-            </div>
-            <div class="icon-shape bg-soft-success rounded-circle p-3">
-              <i class="fas fa-heartbeat text-success"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card stat-card deaths h-100">
-        <div class="card-body">
-          <div class="d-flex justify-content-between align-items-center">
-            <div>
-              <h6 class="text-uppercase text-muted mb-1">Deaths</h6>
-              <h3 class="mb-0">{{ global_data.deaths|intcomma }}</h3>
-              <small class="text-danger"><i class="fas fa-arrow-up"></i> {{ global_data.todayDeaths|intcomma }} today</small>
-            </div>
-            <div class="icon-shape bg-soft-danger rounded-circle p-3">
-              <i class="fas fa-skull-crossbones text-danger"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card stat-card active h-100">
-        <div class="card-body">
-          <div class="d-flex justify-content-between align-items-center">
-            <div>
-              <h6 class="text-uppercase text-muted mb-1">Active</h6>
-              <h3 class="mb-0">{{ global_data.active|intcomma }}</h3>
-              <small class="text-info">{{ global_data.critical|intcomma }} in critical condition</small>
-            </div>
-            <div class="icon-shape bg-soft-info rounded-circle p-3">
-              <i class="fas fa-procedures text-info"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Prevention Tips -->
-  <div class="row mb-4">
-    <div class="col-lg-8">
+    <!-- Top Affected Countries -->
+    <div class="col-lg-7">
       <div class="card h-100">
-        <div class="card-header">
-          <h5 class="mb-0"><i class="fas fa-shield-virus me-2"></i>COVID-19 Prevention Tips</h5>
-        </div>
-        <div class="card-body">
-          <div class="row g-4">
-            <div class="col-md-6">
-              <div class="d-flex">
-                <div class="bg-light rounded-circle p-3 me-3">
-                  <i class="fas fa-hands-wash text-primary fa-2x"></i>
-                </div>
-                <div>
-                  <h6>Wash Hands Frequently</h6>
-                  <p class="text-muted small mb-0">Use soap and water for at least 20 seconds, especially after being in public places.</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="d-flex">
-                <div class="bg-light rounded-circle p-3 me-3">
-                  <i class="fas fa-head-side-mask text-primary fa-2x"></i>
-                </div>
-                <div>
-                  <h6>Wear a Mask</h6>
-                  <p class="text-muted small mb-0">Wear a mask in public settings and when around people who don't live in your household.</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="d-flex">
-                <div class="bg-light rounded-circle p-3 me-3">
-                  <i class="fas fa-people-arrows text-primary fa-2x"></i>
-                </div>
-                <div>
-                  <h6>Maintain Social Distance</h6>
-                  <p class="text-muted small mb-0">Keep at least 6 feet (about 2 arms' length) from others.</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="d-flex">
-                <div class="bg-light rounded-circle p-3 me-3">
-                  <i class="fas fa-syringe text-primary fa-2x"></i>
-                </div>
-                <div>
-                  <h6>Get Vaccinated</h6>
-                  <p class="text-muted small mb-0">Authorized COVID-19 vaccines can help protect you from COVID-19.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <!-- COVID-19 Awareness -->
-    <div class="col-lg-4">
-      <div class="card h-100">
-        <div class="card-header">
-          <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Stay Safe</h5>
-        </div>
-        <div class="card-body p-0">
-          <img src="https://img.freepik.com/free-vector/coronavirus-prevention-banner-with-hand-wearing-medical-mask_107791-2375.jpg" alt="COVID-19 Prevention" class="img-fluid rounded-bottom">
-          <div class="p-3">
-            <h6>Know How it Spreads</h6>
-            <p class="small text-muted">The virus spreads mainly from person to person through respiratory droplets when an infected person coughs, sneezes, or talks.</p>
-            <a href="#" class="btn btn-sm btn-outline-primary">Learn More</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Top Countries -->
-  <div class="row mb-4">
-    <div class="col-lg-6">
-      <div class="card h-100">
-        <div class="card-header">
-          <h5 class="mb-0">Top Affected Countries</h5>
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h2 class="h6 mb-0"><i class="fas fa-globe-americas me-2 text-primary" aria-hidden="true"></i>Top Affected Countries</h2>
+          <span class="badge bg-primary bg-opacity-10 text-primary">Top 10</span>
         </div>
         <div class="card-body p-0">
           <div class="table-responsive">
-            <table class="table table-hover mb-0">
-              <thead class="table-light">
+            <table class="table table-hover mb-0" aria-label="Top affected countries by COVID-19 cases">
+              <thead>
                 <tr>
-                  <th>Country</th>
-                  <th class="text-end">Cases</th>
-                  <th class="text-end">Deaths</th>
-                  <th class="text-end">Recovered</th>
+                  <th scope="col" class="ps-3">#</th>
+                  <th scope="col">Country</th>
+                  <th scope="col" class="text-end">Cases</th>
+                  <th scope="col" class="text-end">Deaths</th>
+                  <th scope="col" class="text-end pe-3">Recovered</th>
                 </tr>
               </thead>
               <tbody>
                 {% for country in top_countries %}
                 <tr>
+                  <td class="ps-3 text-muted">{{ forloop.counter }}</td>
                   <td>
-                    <img src="{{ country.countryInfo.flag }}" alt="{{ country.country }}" class="me-2" style="width: 20px;">
-                    {{ country.country }}
+                    <div class="d-flex align-items-center gap-2">
+                      {% if country.countryInfo.flag %}
+                      <img src="{{ country.countryInfo.flag }}" alt="" class="country-flag" loading="lazy">
+                      {% endif %}
+                      <span class="fw-500">{{ country.country }}</span>
+                    </div>
                   </td>
-                  <td class="text-end">{{ country.cases|intcomma }}</td>
+                  <td class="text-end fw-600">{{ country.cases|intcomma }}</td>
                   <td class="text-end text-danger">{{ country.deaths|intcomma }}</td>
-                  <td class="text-end text-success">{{ country.recovered|intcomma }}</td>
+                  <td class="text-end text-success pe-3">{{ country.recovered|intcomma }}</td>
                 </tr>
+                {% empty %}
+                <tr><td colspan="5" class="text-center py-4 text-muted">No data available</td></tr>
                 {% endfor %}
               </tbody>
             </table>
@@ -259,222 +294,120 @@
         </div>
       </div>
     </div>
-    
-    <!-- Quick Access to Chatbot -->
-    <div class="col-lg-6">
-      <div class="card h-100">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          <h5 class="mb-0">COVID-19 Assistant</h5>
-          <span class="badge bg-success">Available</span>
+
+    <!-- Quick Actions & Key Stats -->
+    <div class="col-lg-5">
+      <div class="card mb-4">
+        <div class="card-header">
+          <h2 class="h6 mb-0"><i class="fas fa-bolt me-2 text-warning" aria-hidden="true"></i>Quick Actions</h2>
         </div>
-        <div class="card-body text-center d-flex flex-column justify-content-center">
-          <i class="fas fa-robot fa-3x text-primary mb-3"></i>
-          <h6>Need COVID-19 Information?</h6>
-          <p class="text-muted mb-3">Get instant answers about symptoms, prevention, vaccines, and more from our AI assistant.</p>
-          <a href="{% url 'chatbot_page' %}" class="btn btn-primary">
-            <i class="fas fa-comments me-2"></i>Start Chat
+        <div class="card-body d-flex flex-column gap-2">
+          <a href="{% url 'chatbot_page' %}" class="quick-action">
+            <i class="fas fa-robot" aria-hidden="true"></i>
+            <div>
+              <strong>COVID-19 Assistant</strong>
+              <div class="text-muted small">Ask about symptoms, prevention & more</div>
+            </div>
+            <i class="fas fa-chevron-right ms-auto text-muted" aria-hidden="true"></i>
+          </a>
+          <a href="{% url 'vaccination' %}" class="quick-action">
+            <i class="fas fa-syringe" aria-hidden="true"></i>
+            <div>
+              <strong>Vaccination Data</strong>
+              <div class="text-muted small">View global vaccination analytics</div>
+            </div>
+            <i class="fas fa-chevron-right ms-auto text-muted" aria-hidden="true"></i>
+          </a>
+          <a href="{% url 'prediction' %}" class="quick-action">
+            <i class="fas fa-chart-line" aria-hidden="true"></i>
+            <div>
+              <strong>Predictions</strong>
+              <div class="text-muted small">Country-level trend analysis</div>
+            </div>
+            <i class="fas fa-chevron-right ms-auto text-muted" aria-hidden="true"></i>
           </a>
         </div>
       </div>
-    </div>
-  </div>
-  
-  {% if error %}
-  <div class="alert alert-warning">
-    <i class="fas fa-exclamation-triangle me-2"></i> {{ error }}
-  </div>
-  {% endif %}
-  
-  <!-- Stats Cards -->
-  <div class="row mb-4">
-    <div class="col-md-3 col-sm-6 mb-4">
-      <div class="card stat-card confirmed h-100">
-        <div class="card-body">
-          <div class="stat-label">Total Cases</div>
-          <div class="stat-value text-primary">{{ global_data.cases|intcomma }}</div>
-          {% if global_data.today_cases > 0 %}
-          <div class="stat-change text-danger">
-            <i class="fas fa-arrow-up"></i> +{{ global_data.today_cases|intcomma }} today
-          </div>
-          {% endif %}
-        </div>
-      </div>
-    </div>
-    
-    <div class="col-md-3 col-sm-6 mb-4">
-      <div class="card stat-card active h-100">
-        <div class="card-body">
-          <div class="stat-label">Active Cases</div>
-          <div class="stat-value text-warning">{{ global_data.active|intcomma }}</div>
-        </div>
-      </div>
-    </div>
-    
-    <div class="col-md-3 col-sm-6 mb-4">
-      <div class="card stat-card recovered h-100">
-        <div class="card-body">
-          <div class="stat-label">Recovered</div>
-          <div class="stat-value text-success">{{ global_data.recovered|intcomma }}</div>
-          <div class="stat-change text-success">
-            {{ global_data.recovered|floatformat:2 }}% recovery rate
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <div class="col-md-3 col-sm-6 mb-4">
-      <div class="card stat-card deaths h-100">
-        <div class="card-body">
-          <div class="stat-label">Deaths</div>
-          <div class="stat-value text-danger">{{ global_data.deaths|intcomma }}</div>
-          {% if global_data.today_deaths > 0 %}
-          <div class="stat-change text-danger">
-            <i class="fas fa-arrow-up"></i> +{{ global_data.today_deaths|intcomma }} today
-          </div>
-          {% endif %}
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Symptoms Section -->
-  <div class="row mb-4">
-    <div class="col-lg-8">
+
       <div class="card">
         <div class="card-header">
-          <h5 class="mb-0"><i class="fas fa-exclamation-triangle me-2 text-warning"></i>Common Symptoms</h5>
-        </div>
-        <div class="card-body">
-          <div class="row g-4">
-            <div class="col-md-4 text-center">
-              <div class="bg-light rounded-circle p-3 mb-2 mx-auto" style="width: 100px; height: 100px;">
-                <i class="fas fa-thermometer-three-quarters text-danger fa-3x"></i>
-              </div>
-              <h6>Fever</h6>
-              <p class="small text-muted mb-0">High temperature</p>
-            </div>
-            <div class="col-md-4 text-center">
-              <div class="bg-light rounded-circle p-3 mb-2 mx-auto" style="width: 100px; height: 100px;">
-                <i class="fas fa-wind text-danger fa-3x"></i>
-              </div>
-              <h6>Cough</h6>
-              <p class="small text-muted mb-0">Dry cough</p>
-            </div>
-            <div class="col-md-4 text-center">
-              <div class="bg-light rounded-circle p-3 mb-2 mx-auto" style="width: 100px; height: 100px;">
-                <i class="fas fa-tired text-danger fa-3x"></i>
-              </div>
-              <h6>Tiredness</h6>
-              <p class="small text-muted mb-0">Feeling of fatigue</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <div class="col-lg-4">
-      <div class="card h-100">
-        <div class="card-header bg-white">
-          <h5 class="mb-0"><i class="fas fa-flag me-2"></i>Top Affected Countries</h5>
+          <h2 class="h6 mb-0"><i class="fas fa-chart-bar me-2 text-info" aria-hidden="true"></i>Key Statistics</h2>
         </div>
         <div class="card-body p-0">
-          <div class="list-group list-group-flush">
-            {% for country in top_countries %}
-            <div class="list-group-item">
-              <div class="d-flex align-items-center">
-                {% if country.country_info.flag %}
-                <img src="{{ country.country_info.flag }}" class="country-flag" alt="{{ country.name }} flag">
-                {% else %}
-                <i class="fas fa-globe me-3"></i>
-                {% endif %}
-                <div class="flex-grow-1">
-                  <h6 class="mb-0">{{ country.name }}</h6>
-                  <small class="text-muted">{{ country.cases|intcomma }} cases</small>
-                </div>
-                <span class="badge bg-danger">{{ country.deaths|intcomma }}</span>
-              </div>
-            </div>
-            {% endfor %}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Additional Stats -->
-  <div class="row">
-    <div class="col-md-6">
-      <div class="card h-100">
-        <div class="card-body">
-          <h5 class="card-title"><i class="fas fa-info-circle me-2"></i>Key Statistics</h5>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              Critical Cases
-              <span class="badge bg-warning">{{ global_data.critical|intcomma }}</span>
+          <ul class="list-group list-group-flush" aria-label="Key statistics">
+            <li class="list-group-item d-flex justify-content-between align-items-center px-3 py-3">
+              <span><i class="fas fa-hospital text-warning me-2" aria-hidden="true"></i>Critical Cases</span>
+              <span class="badge bg-warning bg-opacity-10 text-warning fw-600 px-3 py-2">{{ global_data.critical|intcomma }}</span>
             </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              Affected Countries
-              <span class="badge bg-primary">{{ global_data.affected_countries }}</span>
+            <li class="list-group-item d-flex justify-content-between align-items-center px-3 py-3">
+              <span><i class="fas fa-flag text-primary me-2" aria-hidden="true"></i>Affected Countries</span>
+              <span class="badge bg-primary bg-opacity-10 text-primary fw-600 px-3 py-2">{{ global_data.affectedCountries }}</span>
             </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              Cases Per Million
-              <span class="badge bg-info">{{ global_data.casesPerOneMillion|intcomma }}</span>
+            <li class="list-group-item d-flex justify-content-between align-items-center px-3 py-3">
+              <span><i class="fas fa-users text-info me-2" aria-hidden="true"></i>Cases Per Million</span>
+              <span class="badge bg-info bg-opacity-10 text-info fw-600 px-3 py-2">{{ global_data.casesPerOneMillion|intcomma }}</span>
             </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              Deaths Per Million
-              <span class="badge bg-danger">{{ global_data.deathsPerOneMillion|intcomma }}</span>
+            <li class="list-group-item d-flex justify-content-between align-items-center px-3 py-3">
+              <span><i class="fas fa-skull-crossbones text-danger me-2" aria-hidden="true"></i>Deaths Per Million</span>
+              <span class="badge bg-danger bg-opacity-10 text-danger fw-600 px-3 py-2">{{ global_data.deathsPerOneMillion|intcomma }}</span>
             </li>
           </ul>
         </div>
       </div>
     </div>
-    
-    <div class="col-md-6">
+  </div>
+
+  <!-- Prevention & Symptoms -->
+  <div class="row g-4 mb-4">
+    <!-- Prevention Tips -->
+    <div class="col-lg-7">
       <div class="card h-100">
+        <div class="card-header">
+          <h2 class="h6 mb-0"><i class="fas fa-shield-virus me-2 text-success" aria-hidden="true"></i>Prevention Tips</h2>
+        </div>
         <div class="card-body">
-          <h5 class="card-title"><i class="fas fa-shield-virus me-2"></i>Prevention Tips</h5>
           <div class="row g-3">
-            <div class="col-6">
-              <div class="d-flex align-items-center mb-3">
-                <div class="bg-light p-2 rounded-circle me-3">
-                  <i class="fas fa-hands-wash text-primary"></i>
+            <div class="col-sm-6">
+              <div class="d-flex gap-3">
+                <div class="prevention-icon" style="background:#dbeafe;">
+                  <i class="fas fa-hands-wash text-primary fa-lg" aria-hidden="true"></i>
                 </div>
                 <div>
-                  <h6 class="mb-0">Wash Hands</h6>
-                  <small class="text-muted">Frequently with soap</small>
+                  <h3 class="h6 mb-1">Wash Hands</h3>
+                  <p class="text-muted small mb-0">Use soap and water for at least 20 seconds</p>
                 </div>
               </div>
             </div>
-            <div class="col-6">
-              <div class="d-flex align-items-center mb-3">
-                <div class="bg-light p-2 rounded-circle me-3">
-                  <i class="fas fa-head-side-mask text-primary"></i>
+            <div class="col-sm-6">
+              <div class="d-flex gap-3">
+                <div class="prevention-icon" style="background:#d1fae5;">
+                  <i class="fas fa-head-side-mask text-success fa-lg" aria-hidden="true"></i>
                 </div>
                 <div>
-                  <h6 class="mb-0">Wear Mask</h6>
-                  <small class="text-muted">In public places</small>
+                  <h3 class="h6 mb-1">Wear a Mask</h3>
+                  <p class="text-muted small mb-0">In public and crowded settings</p>
                 </div>
               </div>
             </div>
-            <div class="col-6">
-              <div class="d-flex align-items-center">
-                <div class="bg-light p-2 rounded-circle me-3">
-                  <i class="fas fa-people-arrows text-primary"></i>
+            <div class="col-sm-6">
+              <div class="d-flex gap-3">
+                <div class="prevention-icon" style="background:#fef3c7;">
+                  <i class="fas fa-people-arrows text-warning fa-lg" aria-hidden="true"></i>
                 </div>
                 <div>
-                  <h6 class="mb-0">Social Distance</h6>
-                  <small class="text-muted">Maintain 6 feet</small>
+                  <h3 class="h6 mb-1">Social Distance</h3>
+                  <p class="text-muted small mb-0">Keep at least 6 feet from others</p>
                 </div>
               </div>
             </div>
-            <div class="col-6">
-              <div class="d-flex align-items-center">
-                <div class="bg-light p-2 rounded-circle me-3">
-                  <i class="fas fa-syringe text-primary"></i>
+            <div class="col-sm-6">
+              <div class="d-flex gap-3">
+                <div class="prevention-icon" style="background:#ede9fe;">
+                  <i class="fas fa-syringe text-purple fa-lg" aria-hidden="true" style="color:#7c3aed;"></i>
                 </div>
                 <div>
-                  <h6 class="mb-0">Get Vaccinated</h6>
-                  <small class="text-muted">When eligible</small>
+                  <h3 class="h6 mb-1">Get Vaccinated</h3>
+                  <p class="text-muted small mb-0">Authorized vaccines protect against COVID-19</p>
                 </div>
               </div>
             </div>
@@ -482,966 +415,46 @@
         </div>
       </div>
     </div>
-  </div>
-  
-</div>
-{% endblock %}
 
-{% block scripts %}
-{{ block.super }}
-<!-- Font Awesome for icons -->
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-<!-- Axios for API calls -->
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
-<script>
-// Smooth scrolling for anchor links
-document.addEventListener('DOMContentLoaded', function() {
-  // Smooth scrolling
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-      e.preventDefault();
-      const target = document.querySelector(this.getAttribute('href'));
-      if (target) {
-        target.scrollIntoView({
-          behavior: 'smooth'
-        });
-      }
-    });
-  });
-
-  // Initialize tooltips if Bootstrap is available
-  if (typeof bootstrap !== 'undefined') {
-    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    tooltipTriggerList.map(function(tooltipTriggerEl) {
-      return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
-  }
-
-  // Add animation to stats cards
-  const statCards = document.querySelectorAll('.stat-card');
-  statCards.forEach(card => {
-    card.addEventListener('mouseenter', function() {
-      this.style.transform = 'translateY(-5px)';
-      this.style.boxShadow = '0 10px 20px rgba(0,0,0,0.1)';
-    });
-    
-    card.addEventListener('mouseleave', function() {
-      this.style.transform = 'translateY(0)';
-      this.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
-    });
-  });
-});
-</script>
-                  if (context.parsed.y !== null) {
-                    label += formatNumber(context.parsed.y);
-                  }
-                  return label;
-                }
-              }
-            },
-            legend: {
-              position: 'top',
-              labels: {
-                padding: 20,
-                usePointStyle: true,
-                pointStyle: 'circle'
-              }
-            }
-          },
-          scales: {
-            y: {
-              beginAtZero: true,
-              ticks: {
-                callback: function(value) {
-                  if (value >= 1000000) return (value / 1000000).toFixed(1) + 'M';
-                  if (value >= 1000) return (value / 1000).toFixed(1) + 'K';
-                  return value;
-                }
-              },
-              grid: {
-                drawBorder: false,
-                color: 'rgba(0, 0, 0, 0.05)'
-              }
-            },
-            x: { grid: { display: false } }
-          },
-          elements: {
-            point: { radius: 0, hoverRadius: 6, hoverBorderWidth: 2 }
-          }
-        };
-        
-        new Chart(ctx.getContext('2d'), {
-          type: 'line',
-          data: chartData,
-          options: chartOptions
-        });
-      } catch (error) {
-        console.error('Error initializing main chart:', error);
-      }
-    }
-  });
-</script>
-
-<!-- World Map -->
-<script>
-  // World Map Initialization
-  if (typeof Highcharts !== 'undefined') {
-    try {
-      const mapData = JSON.parse('{{ dataForMap|escapejs|safe }}');
-      
-      // Process the data
-      const processedData = mapData.map(function(item) {
-        return {
-          'hc-key': item.countryCode,
-          value: item.cases || 1
-        };
-      });
-      
-      // Initialize the map
-      Highcharts.mapChart('MyMapChart', {
-        chart: {
-          type: 'map',
-          map: 'custom/world',
-          backgroundColor: 'transparent',
-          height: '70%',
-          spacing: [20, 20, 20, 20]
-        },
-        title: { 
-          text: 'World Map COVID-19 Infection',
-          style: { 
-            color: '#333',
-            fontWeight: 'bold' 
-          }
-        },
-        legend: {
-          backgroundColor: 'rgba(255, 255, 255, 0.8)',
-          title: {
-            text: 'Infected Population Count',
-            style: { 
-              color: '#333',
-              fontWeight: 'bold'
-            }
-          }
-        },
-        mapNavigation: {
-          enabled: true,
-          buttonOptions: { 
-            verticalAlign: 'bottom',
-            theme: {
-              fill: 'white',
-              'stroke-width': 1,
-              stroke: '#ccc',
-              r: 0,
-              states: {
-                hover: {
-                  fill: '#f0f0f0'
-                },
-                select: {
-                  stroke: '#039',
-                  fill: '#a4edba'
-                }
-              }
-            }
-          }
-        },
-        tooltip: {
-          backgroundColor: 'rgba(255, 255, 255, 0.95)',
-          borderWidth: 1,
-          borderColor: '#aaa',
-          borderRadius: 4,
-          shadow: true,
-          useHTML: true,
-          headerFormat: '',
-          pointFormat: [
-            '<div style="min-width: 200px; padding: 5px;">',
-            '  <div style="font-size: 16px; font-weight: bold; color: #333; margin-bottom: 5px;">',
-            '    {point.name}',
-            '  </div>',
-            '  <div style="font-size: 24px; color: #2c3e50; font-weight: bold;">',
-            '    {point.value:,.0f}',
-            '  </div>',
-            '</div>'
-          ].join(''),
-          style: {
-            pointerEvents: 'auto'
-          }
-        },
-        colorAxis: {
-          min: 1,
-          max: 1000,
-          type: 'logarithmic',
-          minColor: '#e6f3ff',
-          maxColor: '#003366',
-          tickLength: 0,
-          minorTickInterval: 0.1,
-          labels: {
-            style: {
-              color: '#666',
-              fontSize: '11px'
-            }
-          },
-          title: {
-            text: null
-          },
-          stops: [
-            [0, '#e6f3ff'],
-            [0.5, '#80bfff'],
-            [1, '#003366']
-          ]
-        },
-        series: [{
-          type: 'map',
-          data: processedData,
-          mapData: Highcharts.maps['custom/world'],
-          joinBy: 'hc-key',
-          name: 'COVID-19 Cases',
-          states: {
-            hover: {
-              color: '#a4edba',
-              borderColor: '#333'
-            }
-          },
-          dataLabels: {
-            enabled: true,
-            format: '{point.name}'
-          },
-          tooltip: {
-            pointFormat: '{point.name}: <b>{point.value}</b> cases'
-          }
-        }]
-        });
-      } catch (error) {
-        console.error('Error initializing map:', error);
-        // Show error message to user
-        const mapContainer = document.getElementById('MyMapChart');
-        if (mapContainer) {
-          mapContainer.innerHTML = '<div class="alert alert-danger">Error loading map data. Please try again later.</div>';
-        }
-      }
-    }
-  });
-</script>
-
-<!-- Line Chart -->
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const ctx2 = document.getElementById('lineChart');
-    if (ctx2) {
-      try {
-        const lineChartData = {
-          labels: JSON.parse('{{ axisValue|safe|escapejs }}'),
-          datasets: JSON.parse('{{ datasetsForLine|safe|escapejs }}')
-        };
-        
-        new Chart(ctx2, {
-          type: 'line',
-          data: lineChartData,
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              y: {
-                type: 'linear',
-                display: true,
-                position: 'left',
-                id: 'y-axis-1'
-              },
-              y1: {
-                type: 'linear',
-                display: true,
-                position: 'right',
-                id: 'y-axis-2',
-                grid: {
-                  drawOnChartArea: false
-                }
-              }
-            }
-          }
-        });
-      } catch (error) {
-        console.error('Error initializing line chart:', error);
-      }
-    }
-  });
-</script>
-
-<!-- Heatmap Chart -->
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    if (typeof ApexCharts === 'undefined') return;
-    
-    const chartElement = document.getElementById('heatchart');
-    if (!chartElement) return;
-    
-    try {
-      const heatmapData = {
-        series: JSON.parse('{{ dataForheatMap|safe|escapejs }}'),
-        categories: JSON.parse('{{ dateCat|safe|escapejs }}')
-      };
-      
-      new ApexCharts(chartElement, {
-        series: heatmapData.series,
-        chart: {
-          height: 6500,
-          type: 'heatmap',
-          toolbar: { show: true },
-          zoom: { enabled: false }
-        },
-        dataLabels: {
-          enabled: true,
-          style: {
-            fontSize: '10px',
-            colors: ['#000']
-          },
-          formatter: function(val, opts) {
-            return val > 0 ? val : '';
-          }
-        },
-        colors: ['#008FFB'],
-        xaxis: {
-          type: 'category',
-          categories: heatmapData.categories,
-          labels: {
-            trim: true,
-            hideOverlappingLabels: true,
-            rotate: -45,
-            style: {
-              fontSize: '10px'
-            }
-          }
-        },
-        yaxis: { 
-          show: false 
-        },
-        tooltip: {
-          y: {
-            formatter: function(val) {
-              return val;
-            }
-          }
-        },
-        plotOptions: {
-          heatmap: {
-            enableShades: true,
-            shadeIntensity: 0.5,
-            radius: 0,
-            useFillColorAsStroke: false,
-            colorScale: {
-              ranges: [
-                { from: 0, to: 100, name: 'Low', color: '#00A100' },
-                { from: 101, to: 1000, name: 'Medium', color: '#128FD9' },
-                { from: 1001, to: 10000, name: 'High', color: '#FFB200' },
-                { from: 10001, to: 100000, name: 'Extreme', color: '#FF0000' }
-              ]
-            }
-          }
-        }
-      }).render();
-    } catch (error) {
-      console.error('Error initializing heatmap chart:', error);
-    }
-  });
-</script>
-
-<div class="container" style="width: 98%;">
-  <div class="row">
-    <div class="col-12 col-lg-3"
-      style="float: left;margin-top: 50px; max-height: 650px;max-width:400px;overflow: scroll; overflow-x:hidden;">
-      <div style="background-color: rgb(41, 41, 40);">
-        <span style="color: rgb(255, 255, 255); text-align: center; font-size: x-small;">
-          <h4>Total Infected: <b>{{totalCount}}</b></h4>
-        </span>
-      </div>
-      <div class="row">
-        <form method="post" enctype="multipart/form-data" action="selectCountry">
-          {% csrf_token %}
-          <div class="col-4" style="float: left;">
-            {% for country in countryNames %}
-            <div style="border-width: 2px; border: #333;">
-              <div>
-                <input class="btn btn-dark" type="submit" value={{country}} name="countryName"
-                  style="width:100px; margin:2px;">
+    <!-- Common Symptoms -->
+    <div class="col-lg-5">
+      <div class="card h-100">
+        <div class="card-header">
+          <h2 class="h6 mb-0"><i class="fas fa-stethoscope me-2 text-danger" aria-hidden="true"></i>Common Symptoms</h2>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-4">
+              <div class="symptom-card">
+                <div class="symptom-icon">
+                  <i class="fas fa-thermometer-three-quarters text-danger fa-lg" aria-hidden="true"></i>
+                </div>
+                <strong class="d-block">Fever</strong>
+                <small class="text-muted">High temp</small>
               </div>
             </div>
-            {% endfor %}
+            <div class="col-4">
+              <div class="symptom-card">
+                <div class="symptom-icon">
+                  <i class="fas fa-lungs text-danger fa-lg" aria-hidden="true"></i>
+                </div>
+                <strong class="d-block">Cough</strong>
+                <small class="text-muted">Dry cough</small>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="symptom-card">
+                <div class="symptom-icon">
+                  <i class="fas fa-bed text-danger fa-lg" aria-hidden="true"></i>
+                </div>
+                <strong class="d-block">Fatigue</strong>
+                <small class="text-muted">Tiredness</small>
+              </div>
+            </div>
           </div>
-          <div class="col-8" style="float: right;">
-            <canvas id="myChart" style="height: 6650px; width: 154px;"></canvas>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
-    <div class="col-12 col-lg-6" style="float: left; margin-top: 50px;">
-      <br>
-      <br>
-      {% if showMap == "True" %}
-      <div id="MyMapChart"></div>
-      {% elif showMap == "False" %}
-      <h2 style="text-align:center">Analysis of {{countryName}}</h2>
-      <canvas id="lineChart" style="height: 400px;"></canvas>
-      {% endif %}
-    </div>
-    <div class="col-12 col-lg-3 "
-      style="float: right;max-width: 400px;margin-top:50px ;  max-height: 650px;overflow: scroll; overflow-x:hidden;">
-      <div style="background-color: rgb(41, 41, 40);">
-        <span style="color: rgb(255, 255, 255); text-align: center; font-size: x-small;">
-          <h4>Last 5 Days Count:</h4>
-        </span>
-      </div>
-      <div class="col-lg-12">
-        <div id="heatchart"></div>
-      </div>
-    </div>
-<!-- Initialize Charts and Maps -->
-<script>
-// Global chart instances
-let trendChart, worldMap;
-
-// Initialize the dashboard when the page loads
-document.addEventListener('DOMContentLoaded', function() {
-  // Initialize Trend Chart
-  initTrendChart();
-  
-  // Initialize World Map
-  initWorldMap();
-  
-  // Chatbot moved to separate page
-  
-  // Set up event listeners
-  setupEventListeners();
-});
-
-// Initialize the trend chart
-function initTrendChart() {
-  const ctx = document.getElementById('covidTrendChart').getContext('2d');
-  
-  trendChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: {{ chart_data.labels|safe }},
-      datasets: [
-        {
-          label: 'Cases',
-          data: {{ chart_data.datasets.0.data|safe }},
-          borderColor: 'rgba(54, 162, 235, 1)',
-          backgroundColor: 'rgba(54, 162, 235, 0.1)',
-          tension: 0.3,
-          fill: true,
-          borderWidth: 2,
-          pointRadius: 2
-        },
-        {
-          label: 'Recovered',
-          data: {{ chart_data.datasets.1.data|safe }},
-          borderColor: 'rgba(75, 192, 192, 1)',
-          backgroundColor: 'rgba(75, 192, 192, 0.1)',
-          tension: 0.3,
-          fill: true,
-          borderWidth: 2,
-          pointRadius: 2
-        },
-        {
-          label: 'Deaths',
-          data: {{ chart_data.datasets.2.data|safe }},
-          borderColor: 'rgba(255, 99, 132, 1)',
-          backgroundColor: 'rgba(255, 99, 132, 0.1)',
-          tension: 0.3,
-          fill: true,
-          borderWidth: 2,
-          pointRadius: 2
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          position: 'top',
-        },
-        tooltip: {
-          mode: 'index',
-          intersect: false,
-        }
-      },
-      scales: {
-        x: {
-          grid: {
-            display: false
-          }
-        },
-        y: {
-          beginAtZero: true,
-          grid: {
-            color: 'rgba(0, 0, 0, 0.05)'
-          },
-          ticks: {
-            callback: function(value) {
-              if (value >= 1000000) {
-                return (value / 1000000).toFixed(1) + 'M';
-              } else if (value >= 1000) {
-                return (value / 1000).toFixed(1) + 'K';
-              }
-              return value;
-            }
-          }
-        }
-      }
-    }
-  });
-}
-
-// Initialize the world map
-function initWorldMap() {
-  // Prepare the data for the map
-  const mapData = {{ map_data|safe }};
-  
-  // Create the map
-  Highcharts.mapChart('worldMap', {
-    chart: {
-      map: 'custom/world',
-      backgroundColor: 'transparent'
-    },
-    title: {
-      text: ''
-    },
-    mapNavigation: {
-      enabled: true,
-      buttonOptions: {
-        verticalAlign: 'bottom'
-      }
-    },
-    colorAxis: {
-      min: 1,
-      max: 1000000,
-      type: 'logarithmic',
-      minColor: '#e6f2ff',
-      maxColor: '#003366',
-      stops: [
-        [0, '#e6f2ff'],
-        [0.5, '#80bfff'],
-        [0.9, '#004d99'],
-        [1, '#003366']
-      ]
-    },
-    tooltip: {
-      formatter: function() {
-        return '<b>' + this.point.name + '</b><br>' +
-          'Cases: ' + Highcharts.numberFormat(this.point.value, 0) + '<br>' +
-          'Deaths: ' + Highcharts.numberFormat(this.point.deaths, 0) + '<br>' +
-          'Recovered: ' + Highcharts.numberFormat(this.point.recovered, 0);
-      }
-    },
-    series: [{
-      data: mapData,
-      name: 'Cases',
-      states: {
-        hover: {
-          color: '#a4edba'
-        }
-      },
-      dataLabels: {
-        enabled: false
-      },
-      cursor: 'pointer',
-      point: {
-        events: {
-          click: function() {
-            // Handle country click
-            window.location.href = '/country/' + this.countryCode;
-          }
-        }
-      }
-    }]
-  });
-}
-
-// Chatbot functionality moved to separate page
-
-// Set up event listeners
-function setupEventListeners() {
-  // Chart type toggle buttons
-  document.querySelectorAll('[data-type]').forEach(button => {
-    button.addEventListener('click', function() {
-      const type = this.getAttribute('data-type');
-      
-      // Update active button
-      document.querySelectorAll('[data-type]').forEach(btn => {
-        btn.classList.remove('active');
-      });
-      this.classList.add('active');
-      
-      // Update chart data based on selected type
-      console.log('Switched to view:', type);
-    });
-  });
-}
-
-// Function to update the dashboard data
-function updateDashboard() {
-  // In a real app, you would fetch new data from your API
-  console.log('Updating dashboard data...');
-  
-  // Simulate data update
-  setTimeout(() => {
-    // Show update notification
-    const notification = document.createElement('div');
-    notification.className = 'alert alert-info alert-dismissible fade show';
-    notification.role = 'alert';
-    notification.innerHTML = `
-      <i class="fas fa-sync-alt me-2"></i> Data updated successfully!
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    `;
-    
-    const container = document.querySelector('.container');
-    container.insertBefore(notification, container.firstChild);
-    
-    // Auto-dismiss after 3 seconds
-    setTimeout(() => {
-      const bsAlert = new bootstrap.Alert(notification);
-      bsAlert.close();
-    }, 3000);
-  }, 1000);
-}
-
-// Auto-refresh data every 5 minutes
-setInterval(updateDashboard, 5 * 60 * 1000);
-
-// Function to scroll to chatbot section
-function scrollToChatbot() {
-  const chatbotSection = document.getElementById('chatbot-section');
-  if (chatbotSection) {
-    chatbotSection.scrollIntoView({ 
-      behavior: 'smooth',
-      block: 'start'
-    });
-    // Focus on the input field after scrolling
-    setTimeout(() => {
-      const userInput = document.getElementById('user-message');
-      if (userInput) {
-        userInput.focus();
-      }
-    }, 500);
-  }
-}
-
-// Main initialization when DOM is fully loaded
-document.addEventListener('DOMContentLoaded', function() {
-    try {
-        // Initialize all charts
-        initBarChart();
-        initLineChart();
-        initHeatmap();
-        initWorldMap();
-        
-        // Set up other event listeners
-        setupEventListeners();
-    } catch (error) {
-        console.error('Error initializing dashboard:', error);
-    }
-});
-
-// Initialize the bar chart
-function initBarChart() {
-    const ctx = document.getElementById('covidChart');
-    if (!ctx) return;
-    
-    try {
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: JSON.parse('{{ countryNames|safe|escapejs }}'),
-        datasets: [{
-          label: "Infected Counts",
-          backgroundColor: "rgb(50, 50, 221)",
-          borderColor: "rgb(255, 99, 132)",
-          data: JSON.parse('{{ barPlotVals|safe|escapejs }}')
-        }]
-      },
-      options: chartOptions
-    });
-  } catch (error) {
-    console.error('Error initializing chart:', error);
-  }
-</script>
-<!-- World Map -->
-<script>
-  var data2 = JSON.parse('{{ dataForMap|safe|escapejs }}');
-  Highcharts.getJSON('https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data/world-population-density.json', function (data) {
-
-    // Prevent logarithmic errors in color calulcation
-    data2.forEach(function (p) {
-      p.value = (p.value < 1 ? 1 : p.value);
-    });
-
-
-    // Initiate the chart
-    Highcharts.mapChart('MyMapChart', {
-
-      chart: {
-        map: 'custom/world'
-      },
-
-      title: {
-        text: 'World Map COVID-19 Infection'
-      },
-
-
-
-      legend: {
-        title: {
-          text: 'Infected Population Count',
-          style: {
-            color: ( // theme
-              Highcharts.defaultOptions &&
-              Highcharts.defaultOptions.legend &&
-              Highcharts.defaultOptions.legend.title &&
-              Highcharts.defaultOptions.legend.title.style &&
-              Highcharts.defaultOptions.legend.title.style.color
-            ) || 'black'
-          }
-        }
-      },
-
-      mapNavigation: {
-        enabled: true,
-        buttonOptions: {
-          verticalAlign: 'bottom'
-        }
-      },
-
-      tooltip: {
-        backgroundColor: 'none',
-        borderWidth: 0,
-        shadow: false,
-        useHTML: true,
-        padding: 0,
-        pointFormat: '<span class="f32"><span class="flag {point.properties.hc-key}">' +
-          '</span></span> <b>{point.name}<b><br>' +
-          '<span style="font-size:25px">{point.value}</span>',
-        positioner: function () {
-          return { x: 0, y: 250 };
-        }
-      },
-
-      colorAxis: {
-        min: 1,
-        max: 1000,
-        type: 'logarithmic'
-      },
-
-      series: [{
-        data: data2,
-        joinBy: ['iso-a3', 'code3'],
-        name: 'Infected Counts',
-        states: {
-          hover: {
-            color: '#a4edba'
-          }
-        }
-      }]
-    });
-  });
-</script>
-<!-- Line Chart -->
-<script>
-  var dataset = JSON.parse('{{ datasetsForLine|safe|escapejs }}');
-  var chartOptions2 = {
-    responsive: true,
-    maintainAspectRatio: false,
-    legend: {
-      display: true
-    },
-    scales: {
-      y: {
-        beginAtZero: true,
-        type: 'linear',
-        display: true,
-        position: 'left',
-        id: 'y-axis-1',
-        grid: {
-          drawOnChartArea: true
-        }
-      },
-      x: {
-        grid: {
-          display: false
-        }
-      },
-      y1: {
-        type: 'linear',
-        display: true,
-        position: 'right',
-        id: 'y-axis-2',
-        grid: {
-          drawOnChartArea: false
-        }
-      }
-    },
-  };
-  
-  // Initialize line chart
-  const initLineChart = () => {
-    const ctx2 = document.getElementById("lineChart");
-    if (!ctx2) return;
-    
-    try {
-      const dataset = JSON.parse('{{ datasetsForLine|safe|escapejs }}');
-      new Chart(ctx2, {
-        type: "line",
-        data: {
-          labels: JSON.parse('{{ axisValue|safe|escapejs }}'),
-          datasets: dataset
-        },
-        options: chartOptions2
-      });
-    } catch (error) {
-      console.error('Error initializing line chart:', error);
-    }
-  };
-  
-  // Initialize heatmap
-  const initHeatmap = () => {
-    try {
-      const options = {
-        series: JSON.parse('{{ dataForheatMap|safe|escapejs }}'),
-        chart: {
-          height: 6500,
-          type: "heatmap"
-        },
-        dataLabels: {
-          enabled: true,
-          position: "top"
-        },
-        colors: ["#008FFB"],
-        yaxis: {
-          show: false
-        },
-        xaxis: {
-          type: "category",
-          categories: JSON.parse('{{ dateCat|safe|escapejs }}')
-        }
-      };
-      
-      const chartElement = document.querySelector("#heatchart");
-      if (chartElement) {
-        const chart4 = new ApexCharts(chartElement, options);
-        chart4.render();
-      }
-    } catch (error) {
-      console.error('Error initializing heatmap chart:', error);
-    }
-  };
-
-  // Initialize the bar chart
-const initBarChart = () => {
-    const ctx = document.getElementById('covidChart');
-    if (!ctx) return;
-    
-    try {
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: JSON.parse('{{ countryNames|safe|escapejs }}'),
-                datasets: [{
-                    label: 'Infected Counts',
-                    data: JSON.parse('{{ barPlotVals|safe|escapejs }}'),
-                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: { beginAtZero: true }
-                }
-            }
-        });
-    } catch (error) {
-        console.error('Error initializing bar chart:', error);
-    }
-};
-
-// Line chart initialization is already handled in the earlier initLineChart function
-// Heatmap initialization is already handled in the earlier initHeatmap function
-
-// Initialize the world map
-function initWorldMap() {
-    try {
-        const data2 = JSON.parse('{{ dataForMap|safe|escapejs }}');
-        
-        // Prevent logarithmic errors in color calculation
-        data2.forEach(function(p) {
-            p.value = (p.value < 1 ? 1 : p.value);
-        });
-
-        // Initiate the chart
-        Highcharts.mapChart('MyMapChart', {
-            chart: {
-                map: 'custom/world'
-            },
-            title: {
-                text: 'World Map COVID-19 Infection'
-            },
-            legend: {
-                title: {
-                    text: 'Infected Population Count',
-                    style: {
-                        color: (Highcharts.defaultOptions &&
-                                Highcharts.defaultOptions.legend &&
-                                Highcharts.defaultOptions.legend.title &&
-                                Highcharts.defaultOptions.legend.title.style &&
-                                Highcharts.defaultOptions.legend.title.style.color) || 'black'
-                    }
-                }
-            },
-            mapNavigation: {
-                enabled: true,
-                buttonOptions: {
-                    verticalAlign: 'bottom'
-                }
-            },
-            tooltip: {
-                backgroundColor: 'none',
-                borderWidth: 0,
-                shadow: false,
-                useHTML: true,
-                padding: 0,
-                pointFormat: '<span class="f32"><span class="flag {point.properties.hc-key}">' +
-                    '</span></span> <b>{point.name}<b><br>' +
-                    '<span style="font-size:25px">{point.value}</span>',
-                positioner: function() {
-                    return { x: 0, y: 250 };
-                }
-            },
-            colorAxis: {
-                min: 1,
-                max: 1000,
-                type: 'logarithmic'
-            },
-            series: [{
-                data: data2,
-                joinBy: ['iso-a3', 'code3'],
-                name: 'Infected Counts',
-                states: {
-                    hover: {
-                        color: '#a4edba'
-                    }
-                }
-            }]
-        });
-    } catch (error) {
-        console.error('Error initializing world map:', error);
-    }
-}
-
-// Set up event listeners
-function setupEventListeners() {
-    // Add any additional event listeners here
-    document.getElementById('refresh-btn')?.addEventListener('click', updateDashboard);
-}
-</script>
+  </div>
+</div>
 {% endblock %}
