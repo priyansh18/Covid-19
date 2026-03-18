@@ -130,3 +130,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Whitenoise configuration for static files
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
+# Allow WhiteNoise to use Django's static file finders (serves from STATICFILES_DIRS)
+# This avoids requiring collectstatic on serverless platforms like Vercel
+WHITENOISE_USE_FINDERS = True
+
+
