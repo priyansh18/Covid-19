@@ -1,76 +1,145 @@
-<img align='right' src="https://s7.gifyu.com/images/WhatsApp-Image-2020-07-14-at-11.34.49-1.gif" width="215">
+# COVID-19 Tracker
 
-# Covid-19 LIVE Dashboard
+A modern, real-time COVID-19 dashboard built with Django featuring live global statistics, an AI-powered chatbot, country-level prediction analysis, and vaccination insights.
 
-This project is covid-19 real time stats demonstrator along with customer awareness and interactive real-time stats.
+**Live Demo:** [covid19tracker-priyanshsinghal.vercel.app](https://covid19tracker-priyanshsinghal.vercel.app)
 
-<b>Check out</b> http://interactivecovid19dashboard.herokuapp.com/<br><br>
-<b>Link to Research Paper</b>: http://dx.doi.org/10.14299/ijser.2020.12.08 OR https://doi.org/ftg4<br><br>
-<b>Link to Medium Article</b>: https://dakshtrehan.medium.com/interactive-covid-19-dashboard-with-chatbot-and-prediction-capabilities-ad3dc4fa4058<br><br>
+---
 
+## Screenshots
 
+### Dashboard
+Real-time global statistics with top affected countries, key metrics, prevention tips, and quick navigation.
 
+![Dashboard](static/img/screenshots/dashboard.png)
 
-Join the team at: www.dakshtrehan.com; www.priyanshsinghal.com
+### COVID-19 Assistant
+AI-powered chatbot using TF-IDF similarity matching against CDC FAQ data. Includes suggestion chips for quick questions.
 
-## Key Features
-* Live COVID stats
-* Recovery Rate prediction
-* New Infected cases prediction
-* Real Time Self Assessment Chatbot
+![Chatbot](static/img/screenshots/chatbot.png)
 
-## Objective
-In the current scenario, there is a widespread of coronavirus in the entire world, but there are limited supplies and services for the patients. There is a fear in the atmosphere regarding mass spread of deadly disease. To counter the problem, we created a project that aims at demonstrating live stats country-wise as well as city wise in some cases. 
-To take another step towards challenges, we have also introduced prediction rate, where, one can easily predict recovery rate and prediction rate for any day in future.
+### Prediction Analysis
+Country-level trend analysis with total cases, active cases, cumulative cases, and death projections.
 
+![Prediction](static/img/screenshots/prediction.png)
 
-## Services Offered:
-
-1. **Live Covid 19 Stats** - People can monitor the live stats of Coronavirus Confirmed, Active, Recovered cases, etc. in one place.
-
-2. **Prediction rate** - To ease the situation, one can easily predict recovery rate as well as infected rate for future course of time.
-
-3. **Real-Time Self Assessment Chatbot** - People can do take their self-assessment checkup by answering the few questions and based on that answers, the user will get the advice by the chatbot such as to quarantine or visit the hospital or precautions if the user is healthy. This will help people in ensuring their safety.
-
-## Peek : 
-### Overview
-![](https://github.com/dakshtrehan/Interactive-Covid-19-Dashboard/blob/main/Images/Covid%20Homepage.png)
-### Country-wise stats interactive representation
-![](https://github.com/dakshtrehan/Interactive-Covid-19-Dashboard/blob/main/Images/India%20visual%20cases.png)
-### Country-wise Graphical stats 
-![](https://github.com/dakshtrehan/Covid-19-Dashboard/blob/master/images/Screenshot%20(97).png)<br>
-### Option to download interactive country-wise stats charts in various formats
-![](https://github.com/dakshtrehan/Interactive-Covid-19-Dashboard/blob/main/Images/Download%20visuals.png) <br>
-### Daily cummulative data vs Rolling Mean for 4 days, country-wise
-![](https://github.com/dakshtrehan/Interactive-Covid-19-Dashboard/blob/main/Images/Rolling%20Mean.png)<br>
-### Last days stats along with option to download them in various formats
-![](https://github.com/dakshtrehan/Interactive-Covid-19-Dashboard/blob/main/Images/6%20days%20count.png)
-### Interactive Chatbot
-![](https://github.com/dakshtrehan/Interactive-Covid-19-Dashboard/blob/main/Images/chatbot.png)<br>
-### Analysis of world-wise trend
-![](https://github.com/dakshtrehan/Interactive-Covid-19-Dashboard/blob/main/Images/Prediction%20graphs.png)<br>
-### Predicting number of cases worldwide
-![](https://github.com/dakshtrehan/Interactive-Covid-19-Dashboard/blob/main/Images/Prediction%202.png)<br>
-### Predicting number of recovered cases worldwide
-![](https://github.com/dakshtrehan/Interactive-Covid-19-Dashboard/blob/main/Images/Prediction%203.png)<br>
-### Accuracies
-![](https://github.com/dakshtrehan/Interactive-Covid-19-Dashboard/blob/main/Images/Prediction%204.png)<br>
 ### Vaccination Analysis
-![](https://github.com/dakshtrehan/Interactive-Covid-19-Dashboard/blob/main/Images/Screenshot%20(933).png)<br>
+Vaccination progress data with major vaccine brands, daily vaccination rates, and estimation comparisons.
 
+![Vaccination](static/img/screenshots/vaccination.png)
+
+---
+
+## Features
+
+- **Live Dashboard** - Real-time global COVID-19 statistics from the [disease.sh](https://disease.sh/) API with comma-formatted numbers, country flags, and key metrics
+- **AI Chatbot** - Natural language Q&A powered by TF-IDF vectorization and cosine similarity against CDC FAQ data
+- **Prediction Analysis** - Country-specific case prediction charts and trend analysis using Johns Hopkins CSSE data
+- **Vaccination Insights** - Daily vaccination rates, per-million comparisons, progress tracking, and estimation analysis
+- **Responsive Design** - Mobile-first layout with Bootstrap 5.3, works on all screen sizes
+- **Accessible** - ARIA labels, skip navigation, keyboard-navigable, semantic HTML throughout
 
 ## Tech Stack
-* Python 3
-* Python libraries: Numpy, Pandas, Matplotlib for Data Analysis
-* Machine learning for prediction
-* Django for web deployment
-* Javascript for dynamic structure
 
-## Future scope
-* Better interface
+| Layer | Technology |
+|-------|-----------|
+| Backend | Python 3.9, Django 4.2 |
+| Frontend | Bootstrap 5.3, Font Awesome 6.5, Google Fonts (Inter) |
+| AI/ML | scikit-learn (TF-IDF, Cosine Similarity) |
+| Data Sources | [disease.sh API](https://disease.sh/), [Johns Hopkins CSSE](https://github.com/CSSEGISandData/COVID-19) |
+| Deployment | Vercel (Serverless Python) |
+| Static Files | WhiteNoise |
 
+## Project Structure
 
-## Important things to remember
-* source wenv/bin/activate 
+```
+Covid-19/
+├── covid/                    # Main Django app
+│   ├── views.py              # All view functions (dashboard, chatbot, prediction, vaccination)
+│   └── utils.py              # API fetching utilities
+├── dashboard/                # Django project config
+│   ├── settings.py           # Django settings
+│   ├── urls.py               # URL routing
+│   └── wsgi.py               # WSGI entry point (Vercel compatible)
+├── template/                 # HTML templates
+│   ├── base.html             # Base layout with navbar and footer
+│   ├── dashboard.html        # Main dashboard
+│   ├── chatbot.html          # AI assistant interface
+│   ├── prediction.html       # Prediction analysis page
+│   ├── vaccination.html      # Vaccination data page
+│   └── 404.html              # Custom error page
+├── static/img/               # Chart images and vaccine logos
+├── cdc_qa.csv                # CDC FAQ dataset for chatbot
+├── requirements.txt          # Python dependencies
+├── vercel.json               # Vercel deployment config
+└── manage.py                 # Django CLI
+```
 
-#### Designed with ❤ by Daksh Trehan, Priyansh Singhal, Abhishek Jaglan
+## Getting Started
+
+### Prerequisites
+
+- Python 3.9+
+- pip
+
+### Local Development
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/priyansh18/Covid-19.git
+   cd Covid-19
+   ```
+
+2. **Create and activate virtual environment**
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate        # macOS/Linux
+   venv\Scripts\activate           # Windows
+   ```
+
+3. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Run the development server**
+   ```bash
+   python manage.py runserver
+   ```
+
+5. **Open in browser**
+   ```
+   http://127.0.0.1:8000
+   ```
+
+### Deploy to Vercel
+
+1. Install Vercel CLI: `npm i -g vercel`
+2. Login: `vercel login`
+3. Deploy: `vercel --prod`
+
+The `vercel.json` is pre-configured for Django serverless deployment.
+
+## API Endpoints
+
+| Route | Method | Description |
+|-------|--------|-------------|
+| `/` | GET | Main dashboard with global stats |
+| `/chatbot-page/` | GET | AI assistant interface |
+| `/chatBot/` | POST | Chatbot API (returns JSON) |
+| `/prediction/` | GET/POST | Prediction analysis with country selection |
+| `/vaccination/` | GET/POST | Vaccination data and analysis |
+
+## Data Sources
+
+- **Real-time stats**: [disease.sh](https://disease.sh/v3/covid-19/all) - Global and country-level COVID-19 data
+- **Historical data**: [Johns Hopkins CSSE](https://github.com/CSSEGISandData/COVID-19) - Time series confirmed cases
+- **Chatbot knowledge**: CDC FAQ dataset (`cdc_qa.csv`) with TF-IDF matching
+
+## License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+---
+
+Built by [Priyansh Singhal](https://priyanshsinghal.vercel.app), Daksh Trehan & Abhishek Jaglan
