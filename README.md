@@ -2,7 +2,7 @@
 
 A modern, real-time COVID-19 dashboard built with Django featuring live global statistics, an AI-powered chatbot, country-level prediction analysis, and vaccination insights.
 
-**Live Demo:** [covid19tracker-priyanshsinghal.vercel.app](https://covid19tracker-priyanshsinghal.vercel.app)
+**Live Demo:** [covid19.priyanshsinghal.com](https://covid19.priyanshsinghal.com)
 
 ---
 
@@ -142,4 +142,4 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ---
 
-Built by [Priyansh Singhal](https://priyanshsinghal.vercel.app), Daksh Trehan & Abhishek Jaglan
+Built by [Priyansh Singhal](https://priyanshsinghal.com), Daksh Trehan & Abhishek Jaglan
